@@ -1,0 +1,54 @@
+@charset "UTF-8";
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+:root {
+  --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #f8fafc;
+  color: #1e293b;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 본문 타이포그래피 */
+.medical-article-content h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  padding-left: 0.6rem;
+  border-left: 4px solid #2563eb;
+  line-height: 1.4;
+}
+
+.medical-article-content p {
+  margin-bottom: 1rem;
+  line-height: 1.8;
+  color: #334155;
+  font-size: 0.975rem;
+  word-break: keep-all;
+}
+
+.medical-article-content strong {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* 이미지 및 미디어 표시 스타일 */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.medical-article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  margin: 1.5rem auto;
+  display: block;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}

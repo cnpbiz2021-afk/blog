@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- [SEO 최적화] 타겟 키워드 중심의 Title Tag (글자수 약 30~40자 내외 권장) -->
+  <title>부천 수면다원검사·수면무호흡증·코골이 양압기 치료 | 부천코엔이비인후과</title>
+
+  <!-- [SEO 최적화] 메타 디스크립션 (네이버/구글 검색결과 요약 문구) -->
+  <meta name="description" content="부천 수면다원검사, 코골이 및 수면무호흡증 건강보험 80% 적용 진단. 맞춤 양압기(CPAP) 처방 및 관리 수면클리닉, 부천코엔이비인후과입니다." />
+  <meta name="keywords" content="부천 수면다원검사, 부천 수면무호흡증, 부천 코골이, 부천 양압기, 부천 수면클리닉, 부천코엔이비인후과" />
+  <meta name="author" content="부천코엔이비인후과의원" />
+  <meta name="robots" content="index, follow" />
+  
+  <!-- [SEO 최적화] 대표 URL (Canonical Tag) - 중복 색인 방지 (실제 도메인으로 변경 필요) -->
+  <link rel="canonical" href="https://www.example.com/" />
+
+  <!-- [SEO 최적화] Open Graph (네이버 블로그/카카오톡 공유 시 노출되는 카드가 표시됨) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="부천코엔이비인후과 수면클리닉" />
+  <meta property="og:title" content="부천 수면다원검사·수면무호흡증·코골이 양압기 치료 | 부천코엔이비인후과" />
+  <meta property="og:description" content="부천 코골이·수면무호흡증 원인 진단부터 수면다원검사, 양압기 건강보험 처방까지 원스톱 진료!" />
+  <meta property="og:image" content="assets/hero-doctor.jpg" />
+  <meta property="og:url" content="https://www.example.com/" />
+  <meta property="og:locale" content="ko_KR" />
+
+  <!-- [SEO 최적화] 트위터/X 카드 메타태그 -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="부천 수면다원검사·수면무호흡증·코골이 양압기 치료 | 부천코엔이비인후과" />
+  <meta name="twitter:description" content="부천 수면다원검사, 코골이, 수면무호흡증, 양압기 건강보험 적용 안내" />
+  <meta name="twitter:image" content="assets/hero-doctor.jpg" />
+
+  <!-- [SEO 최적화] 구조화 데이터 (JSON-LD) - 구글 및 네이버 리치 검색 결과 노출 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    "name": "부천코엔이비인후과의원",
+    "url": "https://www.example.com/",
+    "logo": "assets/logo.png",
+    "image": "assets/hero-doctor.jpg",
+    "telephone": "032-677-5075",
+    "description": "부천 수면다원검사, 수면무호흡증, 코골이 치료, 양압기 처방 전문 이비인후과",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "소사로 754 3층",
+      "addressLocality": "부천시",
+      "addressRegion": "경기도",
+      "addressCountry": "KR"
+    },
+    "areaServed": "부천시",
+    "medicalSpecialty": [
+      "Otolaryngology",
+      "SleepMedicine"
+    ],
+    "availableService": [
+      {
+        "@type": "MedicalTest",
+        "name": "수면다원검사"
+      },
+      {
+        "@type": "MedicalTherapy",
+        "name": "양압기 치료 (CPAP)"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 커스텀 스타일 -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen">
+
+  <!-- ==================== 1. 상단 헤더 ==================== -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+      
+      <!-- 병원 로고 및 타이틀 -->
+      <a href="/" class="flex items-center gap-3" title="부천코엔이비인후과 홈으로 이동">
+        <img src="assets/logo.png" alt="부천코엔이비인후과 - 부천 수면다원검사 수면무호흡증 양압기 전문 로고" class="h-8 sm:h-10 w-auto object-contain" />
+        <div>
+          <div class="font-extrabold text-slate-900 text-base sm:text-lg tracking-tight leading-none">
+            부천코엔이비인후과
+          </div>
+          <span class="text-[11px] sm:text-xs text-blue-600 font-semibold">
+            부천 수면다원검사 · 수면무호흡 · 양압기
+          </span>
+        </div>
+      </a>
+
+      <!-- 우측 액션 버튼 (글쓰기 / 로그인 / 전화상담) -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- 글쓰기 버튼 (로그인 시 노출) -->
+        <button id="header-write-btn" onclick="openPostEditor()" class="hidden px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition">
+          ✏️ 글쓰기
+        </button>
+
+        <!-- 관리자 로그인/로그아웃 버튼 -->
+        <button id="header-auth-btn" onclick="toggleAdminAuthModal()" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition border border-slate-200">
+          로그인
+        </button>
+
+        <!-- 전화문의 버튼 -->
+        <a href="tel:032-677-5075" aria-label="부천코엔이비인후과 전화 문의 032-677-5075" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition">
+          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-950 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57.55 0 1 .45 1 1V20a1 1 0 01-1 1c-9.39 0-17-7.61-17-17a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          <span>진료 문의</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- 관리자 로그인 상태 알림 바 (로그인 시에만 노출) -->
+  <aside id="admin-bar" class="hidden bg-slate-900 text-white px-4 py-2 text-xs">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <span class="text-emerald-400 font-bold">● 관리자 접속 중 (글 작성/수정/삭제 가능)</span>
+      <div class="flex items-center gap-2">
+        <button onclick="exportPostsJSON()" class="text-slate-300 hover:text-white underline">백업(다운로드)</button>
+        <span>|</span>
+        <label class="text-slate-300 hover:text-white underline cursor-pointer">
+          복원(업로드)
+          <input type="file" id="backup-file-input" accept=".json" class="hidden" />
+        </label>
+        <span>|</span>
+        <button onclick="logoutAdmin()" class="text-rose-300 hover:text-rose-100 font-bold">로그아웃</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="flex-1">
+
+    <!-- ==================== 2. 히어로 섹션 ==================== -->
+    <section class="bg-white border-b border-slate-200">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        
+        <!-- 히어로 메인 배너 이미지 -->
+        <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200 bg-slate-900">
+          <img 
+            src="assets/hero-doctor.jpg" 
+            alt="부천코엔이비인후과 - 부천 수면다원검사, 수면무호흡증, 코골이 치료 및 양압기 처방 수면클리닉" 
+            class="w-full h-auto object-cover max-h-[480px]"
+          />
+        </div>
+
+        <!-- 핵심 키워드 헤드라인 (H1 시맨틱 구조 적용) -->
+        <div class="mt-6 text-center sm:text-left flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200">
+          <div>
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
+              <span class="px-2.5 py-0.5 rounded-md bg-blue-100 text-blue-700 text-xs font-bold">부천 수면클리닉</span>
+              <span class="text-xs text-slate-500 font-medium">건강보험 80% 적용 수면다원검사 & 맞춤 양압기</span>
+            </div>
+            <!-- [SEO 최적화] 검색엔진 최우선 H1 태그로 핵심 키워드 배치 -->
+            <h1 class="text-lg sm:text-xl font-extrabold text-slate-900">
+              부천 수면다원검사 · 수면무호흡증 · 코골이 · 양압기 치료
+            </h1>
+          </div>
+          <div class="flex-shrink-0 text-center sm:text-right">
+            <a href="https://m.booking.naver.com/booking/13/bizes/1404075?theme=place&service-target=map-pc&lang=ko&area=pll" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#03C75A] hover:bg-[#02b350] text-white text-xs sm:text-sm font-extrabold rounded-xl shadow-md transition hover:-translate-y-0.5" title="네이버 예약으로 이동">
+              <span class="w-4 h-4 bg-white text-[#03C75A] rounded font-black text-[11px] flex items-center justify-center">N</span>
+              <span>수면검사외래진료 예약</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 3. 블로그 포스팅 목록 ==================== -->
+    <section class="py-8 sm:py-12">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        
+        <!-- 섹션 헤더 (H2 사용으로 구조적 위계 설정) -->
+        <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-200">
+          <div class="flex items-center gap-2">
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">
+              부천 수면다원검사 & 코골이·양압기 블로그
+            </h2>
+            <span id="posts-count-badge" class="text-xs font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">1</span>
+          </div>
+
+          <!-- 새 글 쓰기 버튼 -->
+          <button id="inline-write-btn" onclick="openPostEditor()" class="hidden px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg shadow-sm">
+            + 새 글 쓰기
+          </button>
+        </div>
+
+        <!-- 포스팅 목록 컨테이너 -->
+        <div id="posts-list-container" class="space-y-6">
+          <!-- JS로 최신순 렌더링 -->
+        </div>
+
+        <!-- 포스팅이 없을 때 빈 화면 안내 -->
+        <div id="no-posts-view" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200 p-8">
+          <p class="text-slate-500 text-sm mb-4">등록된 수면클리닉 블로그 포스팅이 없습니다.</p>
+          <button onclick="if(isAdminLoggedIn()){openPostEditor();}else{openAdminLoginModal();}" class="px-5 py-2.5 bg-blue-600 text-white font-bold rounded-xl text-sm shadow hover:bg-blue-700 transition">
+            첫 글 작성하기
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== 4. 푸터 ==================== -->
+  <footer class="bg-white border-t border-slate-200 text-slate-500 text-xs py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-3">
+      <div class="flex items-center gap-2">
+        <img src="assets/logo.png" alt="부천코엔이비인후과 푸터 로고" class="h-6 w-auto object-contain opacity-80" />
+        <span class="font-bold text-slate-800 text-sm">부천코엔이비인후과의원</span>
+      </div>
+      <p class="leading-relaxed">
+        전화번호: <strong>032-677-5075</strong> | 위치: 경기도 부천시 소사로754, 3층<br />
+        진료과목: <strong>부천 수면다원검사, 수면무호흡증, 코골이 치료, 양압기(CPAP) 건강보험 처방</strong>
+      </p>
+      <div class="pt-3 border-t border-slate-100 flex justify-between items-center text-slate-400">
+        <span>© 2026 부천코엔이비인후과의원. All rights reserved.</span>
+        <button onclick="openAdminLoginModal()" class="hover:text-slate-600 underline">관리자</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 모달 생략 (동일한 로직 적용) -->
+  <div id="post-detail-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto" onclick="closePostDetail()">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative flex flex-col p-6 sm:p-8" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center pb-4 mb-4 border-b border-slate-100">
+        <span class="text-xs font-bold text-blue-600">부천코엔이비인후과 블로그</span>
+        <button onclick="closePostDetail()" class="p-1 rounded-lg hover:bg-slate-100 text-slate-500 text-lg font-bold">✕</button>
+      </div>
+      <div id="post-detail-body"></div>
+    </div>
+  </div>
+
+  <div id="post-editor-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto" onclick="closePostEditor()">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] overflow-y-auto shadow-2xl p-6" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
+        <h3 id="editor-modal-title" class="font-extrabold text-slate-900 text-lg">블로그 글쓰기</h3>
+        <button onclick="closePostEditor()" class="p-1 rounded-lg hover:bg-slate-100 text-slate-500 font-bold">✕</button>
+      </div>
+      <form id="post-editor-form" class="space-y-4">
+        <input type="hidden" id="editor-post-id" value="" />
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">제목</label>
+          <input type="text" id="editor-title" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="제목을 입력하세요 (예: [부천 수면다원검사] 수면무호흡증 원인과 양압기 치료법)" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">작성일자</label>
+          <input type="date" id="editor-date" required class="w-full sm:w-48 px-3 py-2 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        </div>
+        <div class="space-y-2 p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <label class="block text-xs font-bold text-slate-700">대표 썸네일 이미지 (선택)</label>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input type="text" id="editor-cover-url" class="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg text-xs" placeholder="이미지 주소(URL) 입력" />
+            <label class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold cursor-pointer text-center">
+              📁 내 PC에서 선택
+              <input type="file" id="editor-file-upload" accept="image/*" class="hidden" />
+            </label>
+          </div>
+          <div id="editor-image-preview-box" class="mt-2 hidden">
+            <img id="editor-image-preview" src="" alt="미리보기" class="h-24 w-auto object-cover rounded-lg border border-slate-200" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">목록 요약글 (1~2줄)</label>
+          <textarea id="editor-summary" rows="2" class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="부천 수면다원검사, 코골이, 양압기 관련 요약 내용을 작성하세요."></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">본문 내용</label>
+          <textarea id="editor-content" required rows="9" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="부천 수면무호흡증 및 코골이 치료 콘텐츠를 작성합니다."></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-200">
+          <button type="button" onclick="closePostEditor()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs">취소</button>
+          <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow">저장하기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="admin-login-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4" onclick="closeAdminLoginModal()">
+    <div class="bg-white rounded-2xl max-w-xs w-full p-6 shadow-2xl relative" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 class="font-extrabold text-slate-900 text-base">🔒 관리자 로그인</h3>
+        <button onclick="closeAdminLoginModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+      </div>
+      <form id="admin-login-form" class="mt-4 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">비밀번호</label>
+          <input type="password" id="admin-pw-input" required placeholder="비밀번호입력" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        </div>
+        <div id="admin-login-error" class="hidden p-2 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-600 text-center">비밀번호가 올바르지 않습니다.</div>
+        <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm shadow transition">로그인</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 스크립트 로드 -->
+  <script src="js/default-posts.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
