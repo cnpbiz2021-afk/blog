@@ -107,7 +107,7 @@ using (
 -- '2026-09-01',
 -- '부천코엔이비인후과',
 -- '밤새 심한 코골이와 수면무호흡 증상이 있다면 수면다원검사는 필수입니다.',
--- 'https://cnpbiz2021-afk.github.io/blog/assets/hero-doctor.jpg',
+-- 'https://수면다원검사.kr/assets/hero-doctor.jpg',
 -- '<p>안녕하세요. 부천코엔이비인후과입니다.</p>',
 -- '관리자-UUID'
 -- );
