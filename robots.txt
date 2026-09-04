@@ -1,0 +1,63 @@
+# robots.txt for https://xn--299ay57jc0bp5gz2b.kr (수면다원검사.kr)
+# 모든 검색엔진 및 AI 크롤러 접근 허용
+
+User-agent: *
+Allow: /
+
+# 네이버
+User-agent: Yeti
+Allow: /
+
+# 구글
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+# 다음/카카오
+User-agent: Daumoa
+Allow: /
+
+# Bing
+User-agent: Bingbot
+Allow: /
+
+# AI 크롤러 (학습/색인용) 허용
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://xn--299ay57jc0bp5gz2b.kr/sitemap.xml
