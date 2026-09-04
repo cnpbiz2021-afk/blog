@@ -93,20 +93,20 @@
       </a>
 
       <!-- 우측 액션 버튼 (글쓰기 / 로그인 / 전화상담) -->
-      <div class="flex items-center gap-2 sm:gap-3">
+      <div class="flex items-center gap-1.5 sm:gap-3">
         <!-- 글쓰기 버튼 (로그인 시 노출) -->
-        <button id="header-write-btn" onclick="openPostEditor()" class="hidden px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition">
+        <button id="header-write-btn" onclick="openPostEditor()" class="hidden whitespace-nowrap px-2.5 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition">
           ✏️ 글쓰기
         </button>
 
-        <!-- 관리자 로그인/로그아웃 버튼 -->
-        <button id="header-auth-btn" onclick="toggleAdminAuthModal()" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition border border-slate-200">
+        <!-- 관리자 로그인/로그아웃 버튼 (모바일에서는 숨기고 하단 '관리자' 버튼만 사용) -->
+        <button id="header-auth-btn" onclick="toggleAdminAuthModal()" class="hidden sm:inline-flex whitespace-nowrap px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition border border-slate-200">
           로그인
         </button>
 
         <!-- 전화문의 버튼 -->
-        <a href="tel:032-677-5075" aria-label="부천코엔이비인후과 전화 문의 032-677-5075" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition">
-          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-950 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57.55 0 1 .45 1 1V20a1 1 0 01-1 1c-9.39 0-17-7.61-17-17a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        <a href="tel:032-677-5075" aria-label="부천코엔이비인후과 전화 문의 032-677-5075" class="inline-flex items-center gap-1 sm:gap-1.5 whitespace-nowrap px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg text-[11px] sm:text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition">
+          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-950 fill-current flex-shrink-0" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57.55 0 1 .45 1 1V20a1 1 0 01-1 1c-9.39 0-17-7.61-17-17a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
           <span>진료 문의</span>
         </a>
       </div>
