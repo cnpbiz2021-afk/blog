@@ -25,55 +25,14 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "BlogPosting",
-        "headline": {{TITLE_JSON}},
-        "description": {{DESCRIPTION_JSON}},
-        "image": {{IMAGE_JSON}},
-        "datePublished": {{DATE_JSON}},
-        "author": { "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#choi-seongwoong" },
-        "publisher": { "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#clinic" },
-        "isPartOf": { "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#website" },
-        "about": { "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#clinic" },
-        "mainEntityOfPage": { "@type": "WebPage", "@id": {{URL_JSON}}, "url": {{URL_JSON}} }
-      },
-      {
-        "@type": "Person",
-        "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#choi-seongwoong",
-        "name": "최성웅",
-        "honorificSuffix": "원장",
-        "jobTitle": "이비인후과 전문의",
-        "url": "https://xn--c79a54j61g9zg5zbf5l.kr/#choi-seongwoong",
-        "worksFor": { "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#clinic" },
-        "affiliation": { "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#clinic" }
-      },
-      {
-        "@type": "MedicalClinic",
-        "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#clinic",
-        "name": "부천코엔이비인후과의원",
-        "url": "https://xn--c79a54j61g9zg5zbf5l.kr/",
-        "logo": "https://xn--c79a54j61g9zg5zbf5l.kr/assets/logo.png",
-        "image": "https://xn--c79a54j61g9zg5zbf5l.kr/assets/hero-doctor.jpg",
-        "telephone": "032-677-5075",
-        "description": "부천 수면다원검사, 수면무호흡증, 코골이 치료, 양압기 처방 전문 이비인후과",
-        "address": { "@type": "PostalAddress", "streetAddress": "소사로 754 3층", "addressLocality": "부천시", "addressRegion": "경기도", "addressCountry": "KR" },
-        "areaServed": "부천시",
-        "medicalSpecialty": ["Otolaryngology", "SleepMedicine"],
-        "employee": { "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#choi-seongwoong" },
-        "availableService": [
-          { "@type": "MedicalTest", "name": "수면다원검사" },
-          { "@type": "MedicalTherapy", "name": "양압기 치료 (CPAP)" }
-        ]
-      },
-      {
-        "@type": "WebSite",
-        "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#website",
-        "url": "https://xn--c79a54j61g9zg5zbf5l.kr/",
-        "name": "부천코엔이비인후과 수면다원검사",
-        "publisher": { "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#clinic" }
-      }
-    ]
+    "@type": "BlogPosting",
+    "headline": {{TITLE_JSON}},
+    "description": {{DESCRIPTION_JSON}},
+    "image": {{IMAGE_JSON}},
+    "datePublished": {{DATE_JSON}},
+    "author": { "@type": "Organization", "name": {{AUTHOR_JSON}} },
+    "publisher": { "@type": "Organization", "name": "부천코엔이비인후과의원", "logo": { "@type": "ImageObject", "url": "https://xn--c79a54j61g9zg5zbf5l.kr/assets/logo.png" } },
+    "mainEntityOfPage": {{URL_JSON}}
   }
   </script>
   <script type="application/ld+json">
