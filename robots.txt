@@ -1,4 +1,4 @@
-# robots.txt for https://xn--299ay57jc0bp5gz2b.kr (수면다원검사.kr)
+# robots.txt for https://xn--c79a54j61g9zg5zbf5l.kr (수면다원검사.kr)
 # 모든 검색엔진 및 AI 크롤러 접근 허용
 
 User-agent: *
@@ -60,4 +60,4 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://xn--299ay57jc0bp5gz2b.kr/sitemap.xml
+Sitemap: https://xn--c79a54j61g9zg5zbf5l.kr/sitemap.xml
