@@ -30,8 +30,15 @@ function getPostSlug(post) {
   return `${base}-${shortId}`;
 }
 
+// 실제로 크롤러/공유 미리보기가 접근할 정적 페이지 URL.
+// 이 URL은 scripts/generate-static-posts.mjs가 생성하는 /posts/{slug}.html과 반드시 일치해야 합니다.
+function getPostsBasePath() {
+  const path = location.pathname.replace(/index\.html$/, "");
+  return path.endsWith("/") ? path : path + "/";
+}
+
 function getPostUrl(post) {
-  return `${location.origin}${location.pathname}?post=${encodeURIComponent(getPostSlug(post))}`;
+  return `${location.origin}${getPostsBasePath()}posts/${encodeURIComponent(getPostSlug(post))}.html`;
 }
 
 // URL의 ?post= 값(슬러그 또는 구식 id)으로 실제 post 객체 탐색

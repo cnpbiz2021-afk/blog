@@ -1,0 +1,13 @@
+{
+  "name": "bucheon-sleep-clinic-site",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i ./css/tailwind-input.css -o ./css/tailwind-build.css --minify",
+    "watch:css": "tailwindcss -i ./css/tailwind-input.css -o ./css/tailwind-build.css --watch",
+    "build:posts": "node scripts/generate-static-posts.mjs",
+    "build": "npm run build:posts && npm run build:css"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3"
+  }
+}
