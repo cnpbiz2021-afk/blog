@@ -34,42 +34,75 @@
   <!-- [SEO 최적화] 구조화 데이터 (JSON-LD) - 구글 및 네이버 리치 검색 결과 노출 -->
   <script type="application/ld+json">
   {
-    "@context": "https://schema.org",
-    "@type": "MedicalClinic",
-    "name": "부천코엔이비인후과의원",
-    "url": "https://xn--c79a54j61g9zg5zbf5l.kr/",
-    "logo": "https://xn--c79a54j61g9zg5zbf5l.kr/assets/logo.png",
-    "image": "https://xn--c79a54j61g9zg5zbf5l.kr/assets/hero-doctor.jpg",
-    "telephone": "032-677-5075",
-    "description": "부천 수면다원검사, 수면무호흡증, 코골이 치료, 양압기 처방 전문 이비인후과",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "소사로 754 3층",
-      "addressLocality": "부천시",
-      "addressRegion": "경기도",
-      "addressCountry": "KR"
-    },
-    "areaServed": "부천시",
-    "medicalSpecialty": [
-      "Otolaryngology",
-      "SleepMedicine"
-    ],
-    "availableService": [
-      {
-        "@type": "MedicalTest",
-        "name": "수면다원검사"
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalClinic",
+      "name": "부천코엔이비인후과의원",
+      "url": "https://xn--c79a54j61g9zg5zbf5l.kr/",
+      "logo": "https://xn--c79a54j61g9zg5zbf5l.kr/assets/logo.png",
+      "image": "https://xn--c79a54j61g9zg5zbf5l.kr/assets/hero-doctor.jpg",
+      "telephone": "032-677-5075",
+      "description": "부천 수면다원검사, 수면무호흡증, 코골이 치료, 양압기 처방 전문 이비인후과",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "소사로 754 3층",
+        "addressLocality": "부천시",
+        "addressRegion": "경기도",
+        "addressCountry": "KR"
       },
-      {
-        "@type": "MedicalTherapy",
-        "name": "양압기 치료 (CPAP)"
+      "areaServed": "부천시",
+      "medicalSpecialty": [
+        "Otolaryngology",
+        "SleepMedicine"
+      ],
+      "availableService": [
+        {
+          "@type": "MedicalTest",
+          "name": "수면다원검사"
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "양압기 치료 (CPAP)"
+        }
+      ],
+      "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#clinic",
+      "employee": {
+        "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#choi-seongwoong"
+      },
+      "sameAs": []
+    },
+    {
+      "@type": "Person",
+      "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#choi-seongwoong",
+      "name": "최성웅",
+      "honorificSuffix": "원장",
+      "jobTitle": "이비인후과 전문의",
+      "url": "https://xn--c79a54j61g9zg5zbf5l.kr/#choi-seongwoong",
+      "worksFor": {
+        "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#clinic"
+      },
+      "affiliation": {
+        "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#clinic"
       }
-    ]
-  }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#website",
+      "url": "https://xn--c79a54j61g9zg5zbf5l.kr/",
+      "name": "부천코엔이비인후과 수면다원검사",
+      "publisher": {
+        "@id": "https://xn--c79a54j61g9zg5zbf5l.kr/#clinic"
+      }
+    }
+  ]
+}
   </script>
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-  <!-- [SEO/성능 최적화] Tailwind CDN 런타임(JIT) 대신 빌드 타임에 컴파일된 정적 CSS 사용 -->
-  <!-- 기존: <script src="https://cdn.tailwindcss.com"></script> → 렌더링 차단/스타일 깜빡임(FOUC) 유발, LCP·CLS 저하 -->
+<!-- 기존:
+→ 렌더링 차단/스타일 깜빡임(FOUC) 유발, LCP·CLS 저하 -->
   <link rel="stylesheet" href="css/tailwind-build.css" />
   <!-- 커스텀 스타일 -->
   <link rel="stylesheet" href="css/style.css" />
