@@ -136,7 +136,63 @@ function ensureHtmlParagraphs(content) {
 
 /* ==================== 4. 정적 글 페이지 생성 ==================== */
 
-async function renderPostPage(template, post) {
+// 제목에서 의미 있는 키워드 토큰 추출 (조사/기호 등 제거 후 2글자 이상만 사용)
+const TITLE_STOPWORDS = new Set([
+  "부천코엔이비인후과", "부천코엔이비인후과의원", "이비인후과", "안내", "가이드",
+  "및", "수", "것", "위한", "때", "왜", "그리고", "부천",
+]);
+
+function extractTitleTokens(title) {
+  return String(title || "")
+    .replace(/[\[\]!?·,./|:()"'“”]/g, " ")
+    .split(/\s+/)
+    .map(t => t.trim())
+    .filter(t => t.length >= 2 && !TITLE_STOPWORDS.has(t));
+}
+
+// 현재 글과 가장 관련 있는 다른 글 N개를 골라 반환 (제목 키워드 겹침 우선, 동점이면 최신순)
+function getRelatedPosts(post, allPosts, count = 3) {
+  const currentTokens = new Set(extractTitleTokens(post.title));
+  const currentSlug = getPostSlug(post);
+
+  const scored = allPosts
+    .filter(p => getPostSlug(p) !== currentSlug)
+    .map(p => {
+      const tokens = extractTitleTokens(p.title);
+      const overlap = tokens.filter(t => currentTokens.has(t)).length;
+      return { post: p, overlap };
+    });
+
+  scored.sort((a, b) => {
+    if (b.overlap !== a.overlap) return b.overlap - a.overlap;
+    return String(b.post.date || "").localeCompare(String(a.post.date || ""));
+  });
+
+  return scored.slice(0, count).map(s => s.post);
+}
+
+function renderRelatedPostsBlock(post, allPosts) {
+  const related = getRelatedPosts(post, allPosts, 3);
+  if (related.length === 0) return "";
+
+  const items = related
+    .map(p => {
+      const href = `${encodeURIComponent(getPostSlug(p))}.html`;
+      const title = escapeHtml(p.title);
+      const date = escapeHtml(p.date || "");
+      return `<li><a href="${href}" class="block p-3 rounded-lg border border-slate-200 bg-white hover:border-blue-300 hover:bg-blue-50 transition"><span class="block text-sm font-semibold text-slate-800 leading-snug">${title}</span><time datetime="${date}" class="block mt-1 text-[11px] text-slate-400">${date}</time></a></li>`;
+    })
+    .join("\n          ");
+
+  return `<nav aria-label="관련 글" class="mt-10 pt-6 border-t border-slate-200">
+        <h2 class="text-sm font-bold text-slate-900 mb-3">함께 보면 좋은 글</h2>
+        <ul class="grid gap-2 sm:grid-cols-3">
+          ${items}
+        </ul>
+      </nav>`;
+}
+
+async function renderPostPage(template, post, allPosts) {
   const slug = getPostSlug(post);
   const url = `${SITE_ORIGIN}/posts/${encodeURIComponent(slug)}.html`;
   const title = post.title;
@@ -153,6 +209,8 @@ async function renderPostPage(template, post) {
     ? `<div class="mb-6 rounded-2xl overflow-hidden shadow-sm bg-slate-50 border border-slate-100 flex items-center justify-center p-1"><img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" class="w-full h-auto max-h-[550px] object-contain rounded-xl" loading="lazy" /></div>`
     : "";
 
+  const relatedPostsBlock = renderRelatedPostsBlock(post, allPosts);
+
   return template
     .replaceAll("{{TITLE}}", escapeHtml(title))
     .replaceAll("{{DESCRIPTION}}", escapeHtml(description))
@@ -162,6 +220,7 @@ async function renderPostPage(template, post) {
     .replaceAll("{{DATE}}", escapeHtml(date))
     .replaceAll("{{CONTENT}}", content)
     .replaceAll("{{COVER_IMAGE_BLOCK}}", coverImageBlock)
+    .replaceAll("{{RELATED_POSTS_BLOCK}}", relatedPostsBlock)
     .replaceAll("{{TITLE_JSON}}", JSON.stringify(title))
     .replaceAll("{{DESCRIPTION_JSON}}", JSON.stringify(description))
     .replaceAll("{{IMAGE_JSON}}", JSON.stringify(image))
@@ -251,7 +310,7 @@ async function main() {
   await fs.mkdir(path.join(ROOT, "posts"), { recursive: true });
 
   for (const post of posts) {
-    const html = await renderPostPage(template, post);
+    const html = await renderPostPage(template, post, posts);
     const slug = getPostSlug(post);
     const outPath = path.join(ROOT, "posts", `${slug}.html`);
     await fs.writeFile(outPath, html, "utf-8");
