@@ -2,7 +2,7 @@
  * Supabase 기반 관리자 로그인 / 블로그 관리
  */
 
-const ADMIN_AUTHOR = "부천코엔이비인후과";
+const ADMIN_AUTHOR = "부천코엔이비인후과 원장 최성웅";
 
 async function getCurrentUser() {
   const { data, error } = await window.supabaseClient.auth.getUser();

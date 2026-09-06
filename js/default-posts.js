@@ -6,7 +6,7 @@ const DEFAULT_POSTS = [
     id: "post-1",
     title: "[부천 수면다원검사] 건강보험 적용으로 부담 없이 받는 코골이·수면무호흡 정밀검사",
     date: "2026-09-01",
-    author: "부천코엔이비인후과",
+    author: "부천코엔이비인후과 원장 최성웅",
     summary: "밤새 심한 코골이와 수면무호흡 증상이 있다면 수면다원검사는 필수입니다. 건강보험 80% 지원으로 본인부담 약 10만 원대에 정밀 검사가 가능합니다.",
     coverImage: "assets/hero-doctor.jpg",
     content: `
