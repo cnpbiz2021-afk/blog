@@ -32,9 +32,19 @@ function getPostSlug(post) {
 
 // 실제로 크롤러/공유 미리보기가 접근할 정적 페이지 URL.
 // 이 URL은 scripts/generate-static-posts.mjs가 생성하는 /posts/{slug}.html과 반드시 일치해야 합니다.
-function getPostsBasePath() {
+//
+// 주의: 이 값은 반드시 "페이지 최초 로드 시점"의 location.pathname을 기준으로 한 번만
+// 계산해서 캐시해야 합니다. 글 상세를 열 때마다 history.pushState로 주소창 경로 자체가
+// 바뀌기 때문에, 매번 location.pathname을 다시 읽으면 이미 바뀐(오염된) 경로를 기준으로
+// 다음 URL을 또 만들게 되어 "/posts/글A.html/posts/글B.html"처럼 경로가 계속 누적되는
+// 버그가 발생합니다.
+const HOME_BASE_PATH = (() => {
   const path = location.pathname.replace(/index\.html$/, "");
   return path.endsWith("/") ? path : path + "/";
+})();
+
+function getPostsBasePath() {
+  return HOME_BASE_PATH;
 }
 
 function getPostUrl(post) {
@@ -229,17 +239,23 @@ function closePostDetail(options = {}) {
     modal.classList.add("hidden"); modal.classList.remove("flex"); document.body.style.overflow = "auto";
   }
   resetMetaToDefault();
-  if (updateUrl && new URLSearchParams(location.search).has("post")) {
-    history.pushState({}, "", location.pathname);
+  // 글 상세가 열려있던 상태(history.state.postSlug 존재)였을 때만 홈 경로로 리셋합니다.
+  // 예전에는 "?post=" 쿼리스트링 존재 여부로 판단했지만, 지금은 경로 기반 URL
+  // (/posts/슬러그.html)을 쓰기 때문에 그 조건이 항상 false가 되어 주소가 리셋되지
+  // 않고 다음 글을 열 때 경로가 계속 누적되는 문제가 있었습니다.
+  if (updateUrl && history.state && history.state.postSlug) {
+    history.pushState({}, "", HOME_BASE_PATH);
   }
 }
 
 /* ==================== 뒤로가기/앞으로가기 & 초기 진입 ==================== */
 
-window.addEventListener("popstate", () => {
-  const postParam = new URLSearchParams(location.search).get("post");
-  if (postParam) {
-    openPostDetail(postParam, { pushHistory: false });
+window.addEventListener("popstate", (event) => {
+  // 경로 기반 URL(/posts/슬러그.html)에는 "?post=" 쿼리스트링이 없으므로,
+  // location.search가 아니라 pushState로 함께 저장해둔 state.postSlug를 사용합니다.
+  const slug = event.state && event.state.postSlug;
+  if (slug) {
+    openPostDetail(slug, { pushHistory: false });
   } else {
     closePostDetail({ updateUrl: false });
   }
