@@ -201,7 +201,7 @@ async function renderPostPage(template, post, allPosts) {
   const image = post.coverImage
     ? (post.coverImage.startsWith("http") ? post.coverImage : `${SITE_ORIGIN}/${post.coverImage}`)
     : `${SITE_ORIGIN}/assets/hero-doctor.jpg`;
-  const author = post.author || "부천코엔이비인후과";
+  const author = post.author || "부천코엔이비인후과 원장 최성웅";
   const date = post.date || "";
   const content = ensureHtmlParagraphs(post.content);
 
@@ -235,7 +235,7 @@ function renderListItemHtml(post) {
   const slug = getPostSlug(post);
   const href = `posts/${encodeURIComponent(slug)}.html`;
   const title = escapeHtml(post.title);
-  const author = escapeHtml(post.author || "부천코엔이비인후과");
+  const author = escapeHtml(post.author || "부천코엔이비인후과 원장 최성웅");
   const date = escapeHtml(post.date || "");
   const plain = toPlainText(post.content);
   const summary = escapeHtml(post.summary || (plain.slice(0, 130) + (plain.length > 130 ? "..." : "")));
