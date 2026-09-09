@@ -150,6 +150,58 @@ function removePostJsonLd() {
   if (el) el.remove();
 }
 
+/* ==================== 관련 글 (scripts/generate-static-posts.mjs와 동일 로직) ==================== */
+
+const TITLE_STOPWORDS = new Set([
+  "부천코엔이비인후과", "부천코엔이비인후과의원", "이비인후과", "안내", "가이드",
+  "및", "수", "것", "위한", "때", "왜", "그리고", "부천",
+]);
+
+function extractTitleTokens(title) {
+  return String(title || "")
+    .replace(/[\[\]!?·,./|:()"'""]/g, " ")
+    .split(/\s+/)
+    .map(t => t.trim())
+    .filter(t => t.length >= 2 && !TITLE_STOPWORDS.has(t));
+}
+
+function getRelatedPosts(post, allPosts, count = 3) {
+  const currentTokens = new Set(extractTitleTokens(post.title));
+  const currentSlug = getPostSlug(post);
+
+  const scored = allPosts
+    .filter(p => getPostSlug(p) !== currentSlug)
+    .map(p => {
+      const tokens = extractTitleTokens(p.title);
+      const overlap = tokens.filter(t => currentTokens.has(t)).length;
+      return { post: p, overlap };
+    });
+
+  scored.sort((a, b) => {
+    if (b.overlap !== a.overlap) return b.overlap - a.overlap;
+    return String(b.post.date || "").localeCompare(String(a.post.date || ""));
+  });
+
+  return scored.slice(0, count).map(s => s.post);
+}
+
+function renderRelatedPostsBlock(post, allPosts) {
+  const related = getRelatedPosts(post, allPosts, 3);
+  if (related.length === 0) return "";
+
+  const items = related
+    .map(p => {
+      const title = escapeHtml(p.title);
+      const date = escapeHtml(p.date || "");
+      const idAttr = escapeHtml(p.id);
+      const href = getPostUrl(p);
+      return `<li><a href="${href}" onclick="return handlePostLinkClick(event, '${idAttr}')" class="block p-3 rounded-lg border border-slate-200 bg-white hover:border-blue-300 hover:bg-blue-50 transition"><span class="block text-sm font-semibold text-slate-800 leading-snug">${title}</span><time datetime="${date}" class="block mt-1 text-[11px] text-slate-400">${date}</time></a></li>`;
+    })
+    .join("");
+
+  return `<nav aria-label="관련 글" class="mt-10 pt-6 border-t border-slate-200"><h2 class="text-sm font-bold text-slate-900 mb-3">함께 보면 좋은 글</h2><ul class="grid gap-2 sm:grid-cols-3">${items}</ul></nav>`;
+}
+
 /* ==================== 목록 렌더링 ==================== */
 
 async function renderBlogPosts() {
@@ -217,8 +269,9 @@ async function openPostDetail(identifier, options = {}) {
   if (!formattedContent.includes("<p>") && !formattedContent.includes("<div>") && !formattedContent.includes("<h2>")) {
     formattedContent = formattedContent.split("\n\n").map(p => `<p>${escapeHtml(p).replace(/\n/g, "<br>")}</p>`).join("");
   }
+  const relatedPostsBlock = renderRelatedPostsBlock(post, posts);
 
-  contentContainer.innerHTML = `<header class="mb-6"><h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug mb-3">${escapeHtml(post.title)}</h1><div class="flex items-center justify-between pb-4 border-b border-slate-200 text-xs text-slate-500"><div class="flex items-center gap-2"><img src="assets/logo.png" alt="로고" class="h-4 w-auto object-contain opacity-80" /><span class="font-semibold text-slate-700">${escapeHtml(post.author || "부천코엔이비인후과 원장 최성웅")}</span></div><time>${escapeHtml(post.date || "")}</time></div></header>${post.coverImage ? `<div class="mb-6 rounded-2xl overflow-hidden shadow-sm bg-slate-50 border border-slate-100 flex items-center justify-center p-1"><img src="${escapeHtml(post.coverImage)}" alt="${escapeHtml(post.title)}" class="w-full h-auto max-h-[550px] object-contain rounded-xl" /></div>` : ""}<div class="prose prose-slate max-w-none text-slate-700 text-sm sm:text-base leading-relaxed medical-article-content">${formattedContent}</div><div class="mt-8 p-4 sm:p-5 bg-blue-50 rounded-xl border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left"><div><div class="font-bold text-slate-900 text-sm">부천코엔이비인후과 수면클리닉</div><div class="text-xs text-slate-600 mt-0.5">수면다원검사 및 양압기 보험 처방 예약 상담</div></div><div class="flex flex-wrap items-center justify-center gap-2"><a href="https://m.booking.naver.com/booking/13/bizes/1404075?theme=place&service-target=map-pc&lang=ko&area=pll" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#03C75A] text-white rounded-lg text-xs font-bold shadow-sm transition"><span class="w-3.5 h-3.5 bg-white text-[#03C75A] rounded font-black text-[10px] flex items-center justify-center">N</span><span>수면검사외래진료 예약</span></a><a href="tel:032-677-5075" class="inline-flex items-center gap-1 px-3.5 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm transition"><span>📞</span><span>032-677-5075</span></a></div></div>`;
+  contentContainer.innerHTML = `<header class="mb-6"><h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug mb-3">${escapeHtml(post.title)}</h1><div class="flex items-center justify-between pb-4 border-b border-slate-200 text-xs text-slate-500"><div class="flex items-center gap-2"><img src="assets/logo.png" alt="로고" class="h-4 w-auto object-contain opacity-80" /><span class="font-semibold text-slate-700">${escapeHtml(post.author || "부천코엔이비인후과 원장 최성웅")}</span></div><time>${escapeHtml(post.date || "")}</time></div></header>${post.coverImage ? `<div class="mb-6 rounded-2xl overflow-hidden shadow-sm bg-slate-50 border border-slate-100 flex items-center justify-center p-1"><img src="${escapeHtml(post.coverImage)}" alt="${escapeHtml(post.title)}" class="w-full h-auto max-h-[550px] object-contain rounded-xl" /></div>` : ""}<div class="prose prose-slate max-w-none text-slate-700 text-sm sm:text-base leading-relaxed medical-article-content">${formattedContent}</div><div class="mt-8 p-4 sm:p-5 bg-blue-50 rounded-xl border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left"><div><div class="font-bold text-slate-900 text-sm">부천코엔이비인후과 수면클리닉</div><div class="text-xs text-slate-600 mt-0.5">수면다원검사 및 양압기 보험 처방 예약 상담</div></div><div class="flex flex-wrap items-center justify-center gap-2"><a href="https://m.booking.naver.com/booking/13/bizes/1404075?theme=place&service-target=map-pc&lang=ko&area=pll" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#03C75A] text-white rounded-lg text-xs font-bold shadow-sm transition"><span class="w-3.5 h-3.5 bg-white text-[#03C75A] rounded font-black text-[10px] flex items-center justify-center">N</span><span>수면검사외래진료 예약</span></a><a href="tel:032-677-5075" class="inline-flex items-center gap-1 px-3.5 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm transition"><span>📞</span><span>032-677-5075</span></a></div></div>${relatedPostsBlock}`;
   modal.classList.remove("hidden"); modal.classList.add("flex"); document.body.style.overflow = "hidden";
 
   applyPostMeta(post);
