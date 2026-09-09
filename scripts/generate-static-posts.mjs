@@ -112,10 +112,34 @@ function slugify(text) {
     .replace(/^-|-$/g, "");
 }
 
+// 제목 전체를 파일명에 넣으면(특히 한글) 경로가 너무 길어져
+// 윈도우 압축 해제·체크아웃 오류(MAX_PATH 260자)가 날 수 있어
+// 슬러그의 제목 부분은 최대 이 길이로 자른다. 고유성은 shortId가 보장한다.
+const SLUG_TITLE_MAX_LENGTH = 50;
+
+function getShortId(post) {
+  return String(post.id || "").replace(/-/g, "").slice(0, 8) || "0000";
+}
+
+// 단어(하이픈) 경계에서 잘라 슬러그가 어색하게 끊기지 않게 한다.
+function truncateSlugBase(base, maxLen) {
+  if (base.length <= maxLen) return base;
+  const cut = base.slice(0, maxLen);
+  const lastHyphen = cut.lastIndexOf("-");
+  return (lastHyphen >= 10 ? cut.slice(0, lastHyphen) : cut).replace(/-+$/g, "");
+}
+
+// 현재(짧은) 슬러그 - 실제로 사용되는 URL/파일명
 function getPostSlug(post) {
+  const base = truncateSlugBase(slugify(post.title) || "post", SLUG_TITLE_MAX_LENGTH);
+  return `${base}-${getShortId(post)}`;
+}
+
+// 과거(제목 전체) 슬러그 - 이미 검색엔진에 색인됐을 수 있는 예전 URL.
+// 이 경로에는 새 URL로 안내하는 리다이렉트 스텁을 생성해 404를 방지한다.
+function getLegacyPostSlug(post) {
   const base = slugify(post.title) || "post";
-  const shortId = String(post.id || "").replace(/-/g, "").slice(0, 8) || "0000";
-  return `${base}-${shortId}`;
+  return `${base}-${getShortId(post)}`;
 }
 
 function escapeHtml(value) {
@@ -301,6 +325,106 @@ async function regenerateSitemap(posts) {
   console.log(`sitemap.xml을 URL ${urls.length}개로 재생성했습니다.`);
 }
 
+/* ==================== 5-1. 예전(긴) URL 리다이렉트 스텁 ==================== */
+
+function renderRedirectStub(newUrl, title) {
+  const safeUrl = escapeHtml(newUrl);
+  const safeTitle = escapeHtml(title || "");
+  return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="0; url=${safeUrl}" />
+  <link rel="canonical" href="${safeUrl}" />
+  <meta name="robots" content="noindex, follow" />
+  <title>${safeTitle}</title>
+</head>
+<body>
+  <p>페이지가 이동되었습니다. 자동으로 이동하지 않으면 <a href="${safeUrl}">여기</a>를 눌러주세요.</p>
+</body>
+</html>
+`;
+}
+
+// 슬러그가 짧아지면서 예전(제목 전체) URL로 이미 색인된 링크가 있을 수 있으므로,
+// 그 경로에 새 URL로 안내하는 정적 리다이렉트 페이지를 함께 생성해 404를 막는다.
+async function writeLegacyRedirectStubs(posts) {
+  let count = 0;
+  for (const post of posts) {
+    const legacySlug = getLegacyPostSlug(post);
+    const currentSlug = getPostSlug(post);
+    if (legacySlug === currentSlug) continue; // 원래 짧았던 슬러그는 스텁 불필요
+
+    const newUrl = `${SITE_ORIGIN}/posts/${encodeURIComponent(currentSlug)}.html`;
+    const outPath = path.join(ROOT, "posts", `${legacySlug}.html`);
+    await fs.writeFile(outPath, renderRedirectStub(newUrl, post.title), "utf-8");
+    count++;
+  }
+  if (count > 0) {
+    console.log(`  -> 예전 URL 리다이렉트 스텁 ${count}건 생성`);
+  }
+}
+
+/* ==================== 6-1. rss.xml 재생성 ==================== */
+
+function escapeXml(value) {
+  return String(value ?? "").replace(/[&<>'"]/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&apos;", '"': "&quot;",
+  }[c]));
+}
+
+function toRfc822(dateStr) {
+  const d = dateStr ? new Date(dateStr) : new Date();
+  return Number.isNaN(d.getTime()) ? new Date().toUTCString() : d.toUTCString();
+}
+
+async function regenerateRss(posts) {
+  const siteTitle = "부천코엔이비인후과 수면클리닉";
+  const siteDescription = "부천 수면다원검사, 코골이 및 수면무호흡증 진단, 양압기 처방 및 관리 수면클리닉, 부천코엔이비인후과입니다.";
+  const feedUrl = `${SITE_ORIGIN}/rss.xml`;
+  const now = new Date().toUTCString();
+
+  // 최신 글 30건만 노출 (RSS 관례)
+  const recent = posts.slice(0, 30);
+
+  const items = recent
+    .map(post => {
+      const url = `${SITE_ORIGIN}/posts/${encodeURIComponent(getPostSlug(post))}.html`;
+      const title = escapeXml(post.title);
+      const plain = toPlainText(post.content);
+      const description = escapeXml((post.summary && post.summary.trim()) || plain.slice(0, 140));
+      const pubDate = toRfc822(post.date);
+      const author = escapeXml(post.author || "부천코엔이비인후과 원장 최성웅");
+
+      return `  <item>
+    <title>${title}</title>
+    <link>${url}</link>
+    <guid isPermaLink="true">${url}</guid>
+    <pubDate>${pubDate}</pubDate>
+    <description>${description}</description>
+    <author>${author}</author>
+  </item>`;
+    })
+    .join("\n");
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>${escapeXml(siteTitle)}</title>
+  <link>${SITE_ORIGIN}/</link>
+  <description>${escapeXml(siteDescription)}</description>
+  <language>ko-kr</language>
+  <lastBuildDate>${now}</lastBuildDate>
+  <atom:link href="${feedUrl}" rel="self" type="application/rss+xml" />
+${items}
+</channel>
+</rss>
+`;
+
+  await fs.writeFile(path.join(ROOT, "rss.xml"), xml, "utf-8");
+  console.log(`rss.xml을 최신 글 ${recent.length}건으로 재생성했습니다.`);
+}
+
 /* ==================== 7. 메인 ==================== */
 
 async function main() {
@@ -317,8 +441,10 @@ async function main() {
     console.log(`  -> posts/${slug}.html 생성`);
   }
 
+  await writeLegacyRedirectStubs(posts);
   await injectListIntoIndex(posts);
   await regenerateSitemap(posts);
+  await regenerateRss(posts);
 
   console.log("완료.");
 }
