@@ -104,8 +104,8 @@
           ✏️ 글쓰기
         </button>
 
-        <!-- 관리자 로그인/로그아웃 버튼 (모바일에서는 숨기고 하단 '관리자' 버튼만 사용) -->
-        <button id="header-auth-btn" onclick="toggleAdminAuthModal()" class="hidden sm:inline-flex whitespace-nowrap px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition border border-slate-200">
+        <!-- 관리자 로그인/로그아웃 버튼: 평소에는 완전히 숨김. 로그인 상태일 때만 JS가 노출시킴 (관리자 전용 단축키: Alt+Shift+A) -->
+        <button id="header-auth-btn" onclick="toggleAdminAuthModal()" class="hidden whitespace-nowrap px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition border border-slate-200">
           로그인
         </button>
 
@@ -388,7 +388,7 @@
   <!-- ==================== 4. 푸터 ==================== -->
   <footer class="bg-white border-t border-slate-200 text-slate-500 text-xs py-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-3">
-      <div class="flex items-center gap-2">
+      <div id="footer-brand-trigger" class="flex items-center gap-2 select-none">
         <img src="assets/logo.png" alt="부천코엔이비인후과 푸터 로고" class="h-6 w-auto object-contain opacity-80" width="24" height="24" loading="lazy" />
         <span class="font-bold text-slate-800 text-sm">부천코엔이비인후과의원</span>
       </div>
@@ -396,9 +396,11 @@
         전화번호: <strong>032-677-5075</strong> | 위치: 경기도 부천시 소사로754, 3층<br />
         진료과목: <strong>부천 수면다원검사, 수면무호흡증, 코골이 치료, 양압기(CPAP) 건강보험 처방</strong>
       </p>
+      <p class="text-slate-400">
+        <a href="privacy.html" class="hover:text-slate-600 underline">개인정보처리방침</a>
+      </p>
       <div class="pt-3 border-t border-slate-100 flex justify-between items-center text-slate-400">
         <span>© 2026 부천코엔이비인후과의원. All rights reserved.</span>
-        <button onclick="openAdminLoginModal()" class="hover:text-slate-600 underline">관리자</button>
       </div>
     </div>
   </footer>
