@@ -124,10 +124,11 @@ async function updateAdminUI() {
 
   if (headerAuthBtn) {
     headerAuthBtn.innerText = loggedIn ? "로그아웃" : "로그인";
-    // 모바일에서는 항상 숨김 처리 (하단 '관리자' 버튼만 사용), sm 이상에서만 노출
+    // 평소 방문자에게는 완전히 숨김. 관리자로 로그인된 상태에서만 노출(로그아웃용).
+    // 로그인 자체는 비공개 단축키(Alt+Shift+A)로 진입한다.
     headerAuthBtn.className = loggedIn
-      ? "hidden sm:inline-flex whitespace-nowrap px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 transition border border-rose-200"
-      : "hidden sm:inline-flex whitespace-nowrap px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition border border-slate-200";
+      ? "inline-flex whitespace-nowrap px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 transition border border-rose-200"
+      : "hidden whitespace-nowrap px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition border border-slate-200";
   }
 
   if (window.renderBlogPosts) await window.renderBlogPosts();
@@ -321,6 +322,40 @@ window.adminReady = (async () => {
   window.supabaseClient.auth.onAuthStateChange(() => {
     setTimeout(() => updateAdminUI(), 0);
   });
+
+  // 관리자 전용 비공개 단축키: Alt+Shift+A → 로그인 모달 오픈
+  // (공개 화면에는 로그인/관리자 버튼이 노출되지 않으므로 이 단축키로만 접근)
+  document.addEventListener("keydown", async e => {
+    if (e.altKey && e.shiftKey && (e.key === "A" || e.key === "a")) {
+      e.preventDefault();
+      if (await isAdminLoggedIn()) {
+        toggleAdminAuthModal();
+      } else {
+        openAdminLoginModal();
+      }
+    }
+  });
+
+  // 모바일용 비공개 진입: 하단 병원명/로고를 2.5초 안에 5번 연속 탭하면 로그인 모달 오픈
+  const footerTrigger = document.getElementById("footer-brand-trigger");
+  if (footerTrigger) {
+    let tapCount = 0;
+    let tapTimer = null;
+    footerTrigger.addEventListener("click", async () => {
+      tapCount += 1;
+      if (tapTimer) clearTimeout(tapTimer);
+      tapTimer = setTimeout(() => { tapCount = 0; }, 2500);
+      if (tapCount >= 5) {
+        tapCount = 0;
+        clearTimeout(tapTimer);
+        if (await isAdminLoggedIn()) {
+          toggleAdminAuthModal();
+        } else {
+          openAdminLoginModal();
+        }
+      }
+    });
+  }
 
   await updateAdminUI();
 })();
