@@ -307,6 +307,8 @@ async function regenerateSitemap(posts) {
   const today = new Date().toISOString().split("T")[0];
   const urls = [
     { loc: `${SITE_ORIGIN}/`, lastmod: today, changefreq: "weekly", priority: "1.0" },
+    // 애드센스 등 정책상 필요한 고정 페이지 (글 목록과 무관하게 항상 포함)
+    { loc: `${SITE_ORIGIN}/privacy.html`, lastmod: today, changefreq: "yearly", priority: "0.3" },
     ...posts.map(post => ({
       loc: `${SITE_ORIGIN}/posts/${encodeURIComponent(getPostSlug(post))}.html`,
       lastmod: (post.updatedAt || post.date || today).slice(0, 10),
