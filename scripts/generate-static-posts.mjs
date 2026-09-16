@@ -327,6 +327,107 @@ async function regenerateSitemap(posts) {
   console.log(`sitemap.xml을 URL ${urls.length}개로 재생성했습니다.`);
 }
 
+/* ==================== 4-1. 글 통합(병합) 리다이렉트 ====================
+ * 여러 개의 얇은 글을 하나의 필라(pillar) 글로 통합할 때 사용한다.
+ * oldSlugs에 있던 예전 글들의 URL을 접속하면, newTitle과 제목이 일치하는
+ * "현재 Supabase에 존재하는 글"의 최신 슬러그로 자동 이동시킨다.
+ * - newTitle에 해당하는 글이 아직 Supabase에 없으면(=아직 등록 전) 조용히 건너뛴다.
+ * - 이 로직은 매 빌드(1시간 주기)마다 다시 실행되므로, 이후 해당 글이
+ *   삭제/재생성 되어도 리다이렉트 스텁은 계속 새로 생성된다.
+ */
+const MERGE_REDIRECTS = [
+  {
+    newTitle: "수면무호흡증 자가진단 체크리스트 - 이런 증상이 있다면 의심하세요",
+    oldSlugs: [
+      "아침에-반복되는-두통-수면무호흡증-증상일-수-있습니다-34bef2d0",
+      "수면무호흡증이-기억력과-집중력에도-영향을-줄까-6352d27e",
+      "옆으로-누우면-수면무호흡증이-좋아질까-617b1848",
+      "옆으로-누워-자면-수면무호흡증이-좋아질까-부천-수면다원검사-51951b6e",
+      "잠을-오래-자는데도-피곤하다면-수면무호흡증일까-46ce1ccc",
+      "수면-중-자주-깨는데-수면다원검사가-도움이-될까-0874fb8e",
+      "배우자의-코골이-참지-마세요-9d38fce8",
+      "수면무호흡증-마른사람도-안심할-수-없습니다-781a1a39",
+    ],
+  },
+  {
+    newTitle: "수면무호흡증을 방치하면 생기는 위험 - 5대 합병증과 진행 경과",
+    oldSlugs: [
+      "단순-잠버릇이-아닙니다-수면무호흡증-원인과-방치-시-유발되는-위험한-5대-합병증-9f18a5fa",
+      "부천-수면무호흡증-합병증-방치하면-위험한-이유-부천-수면클리닉-be1581c5",
+      "수면무호흡증-치료하지-않고-방치하면-어떻게-될까-f9000525",
+      "코골이가-심해졌다면-수면무호흡증을-의심해보세요-a40ff78c",
+    ],
+  },
+  {
+    newTitle: "수면다원검사란? 검사 당일 과정부터 준비물까지 한 번에 정리",
+    oldSlugs: [
+      "부천-이비인후과-전문의가-직접-설명하는-수면다원검사-검사-당일-진행-과정과-주의사항-5195256e",
+      "수면다원검사-병원에서-잠을-자면서-검사를-하는-이유-d722b3c1",
+      "수면다원검사-전-준비사항-검사-전에-이것만-확인하세요-cdae2bfb",
+      "수면다원검사-결과-정상인데도-피곤할-수-있을까-6a3a999d",
+    ],
+  },
+  {
+    newTitle: "수면다원검사, 나도 받아야 할까? 대상·검사기관 선택·비용 완벽 정리",
+    oldSlugs: [
+      "수면무호흡증이-의심되면-꼭-수면다원검사를-해야-할까요-28342a0a",
+      "코골이는-심하지-않은데-수면다원검사를-받아야-할까-443036eb",
+      "수면다원검사-어디서-하는-게-좋을까-검사기관-선택-기준-부천-수면다원검사-489fab81",
+      "수면다원검사-비용-총정리건강보험-실비보험-6cb297b6",
+      "부천-수면다원검사-코골이와-불면증-원인-정확히-찾는-방법-fcecc053",
+      "부천-수면다원검사-건강보험-적용으로-부담-없이-받는-코골이수면무호흡-검사-안내-e7b3ff02",
+    ],
+  },
+  {
+    newTitle: "양압기(CPAP) 치료 효과와 건강보험 처방 완벽 가이드",
+    oldSlugs: [
+      "부천-수면무호흡증-양압기-치료-얼마나-효과가-있을까요-7252b61f",
+      "부천-양압기-수면무호흡증이라면-꼭-사용해야-할까요-c2bc9a3f",
+      "부천-양압기-코골이와-수면무호흡증-비수술-치료의-표준-양압기cpap-건강보험-처방-및-74c3b3e4",
+      "양압기를-쓰면-정말-혈압이-내려갈까요-07c098c1",
+      "수면무호흡증-치료-무조건-수술부터-해야-할까요-부천-수면다원검사-안내-302a660b",
+    ],
+  },
+  {
+    newTitle: "양압기 처음 쓰는 분을 위한 실전 가이드 - 마스크·사용시간·적응 팁",
+    oldSlugs: [
+      "양압기-마스크-종류와-착용-팁-왜-이비인후과-수면클리닉에서-관리받아야-할까-f45f7d28",
+      "양압기-사용시간이-중요한-이유몇-시간-이상-써야-할까요-부천-양압기-7252b61f",
+      "양압기-적응이-유독-힘든-분들을-위한-현실적인-팁-c2bc9a3f",
+      "양압기-처음-사용할-때-가장-많이-하는-실수-7가지-5a269c59",
+    ],
+  },
+  {
+    newTitle: "체중·생활습관과 코골이·수면무호흡증의 관계",
+    oldSlugs: [
+      "수면무호흡증과-비만-마운자로가-도움이-될까요-83fc81e1",
+      "수면무호흡증-치료에서-체중-감량이-얼마나-중요할까-0bd6d751",
+      "술을-마시면-왜-코골이가-심해질까-03f5d480",
+    ],
+  },
+];
+
+async function writeMergeRedirectStubs(posts) {
+  let count = 0;
+  for (const entry of MERGE_REDIRECTS) {
+    const target = posts.find(p => p.title === entry.newTitle);
+    if (!target) {
+      console.warn(`  -> [병합 리다이렉트] "${entry.newTitle}" 글을 아직 찾지 못해 건너뜁니다.`);
+      continue;
+    }
+    const newSlug = getPostSlug(target);
+    const newUrl = `${SITE_ORIGIN}/posts/${encodeURIComponent(newSlug)}.html`;
+    for (const oldSlug of entry.oldSlugs) {
+      const outPath = path.join(ROOT, "posts", `${oldSlug}.html`);
+      await fs.writeFile(outPath, renderRedirectStub(newUrl, target.title), "utf-8");
+      count++;
+    }
+  }
+  if (count > 0) {
+    console.log(`  -> 통합 리다이렉트 스텁 ${count}건 생성`);
+  }
+}
+
 /* ==================== 5-1. 예전(긴) URL 리다이렉트 스텁 ==================== */
 
 function renderRedirectStub(newUrl, title) {
@@ -444,6 +545,7 @@ async function main() {
   }
 
   await writeLegacyRedirectStubs(posts);
+  await writeMergeRedirectStubs(posts);
   await injectListIntoIndex(posts);
   await regenerateSitemap(posts);
   await regenerateRss(posts);
