@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>{{TITLE}} | 부천코엔이비인후과</title>
   <meta name="description" content="{{DESCRIPTION}}" />
-  <meta name="robots" content="index, follow" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="{{URL}}" />
   <link rel="alternate" type="application/rss+xml" title="부천코엔이비인후과 수면클리닉 RSS" href="https://xn--c79a54j61g9zg5zbf5l.kr/rss.xml" />
-
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="부천코엔이비인후과 수면클리닉" />
   <meta property="og:title" content="{{TITLE}} | 부천코엔이비인후과" />
@@ -17,115 +15,50 @@
   <meta property="og:image" content="{{IMAGE}}" />
   <meta property="og:url" content="{{URL}}" />
   <meta property="og:locale" content="ko_KR" />
-
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{{TITLE}} | 부천코엔이비인후과" />
   <meta name="twitter:description" content="{{DESCRIPTION}}" />
   <meta name="twitter:image" content="{{IMAGE}}" />
-
   <script type="application/ld+json">
   {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": {{TITLE_JSON}},
-    "description": {{DESCRIPTION_JSON}},
-    "image": {{IMAGE_JSON}},
-    "datePublished": {{DATE_JSON}},
-    "author": { "@type": "Person", "name": "최성웅", "jobTitle": "원장", "worksFor": { "@type": "MedicalClinic", "name": "부천코엔이비인후과" } },
-    "publisher": { "@type": "Organization", "name": "부천코엔이비인후과의원", "logo": { "@type": "ImageObject", "url": "https://xn--c79a54j61g9zg5zbf5l.kr/assets/logo.png" } },
-    "mainEntityOfPage": {{URL_JSON}}
+    "@context":"https://schema.org","@type":"BlogPosting","headline":{{TITLE_JSON}},"description":{{DESCRIPTION_JSON}},"image":{{IMAGE_JSON}},"datePublished":{{DATE_JSON}},"dateModified":{{UPDATED_DATE_JSON}},"author":{"@type":"Person","name":"최성웅","jobTitle":"원장","worksFor":{"@type":"MedicalClinic","name":"부천코엔이비인후과"}},"publisher":{"@type":"Organization","name":"부천코엔이비인후과의원","logo":{"@type":"ImageObject","url":"https://xn--c79a54j61g9zg5zbf5l.kr/assets/logo.png"}},"mainEntityOfPage":{{URL_JSON}}
   }
   </script>
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://xn--c79a54j61g9zg5zbf5l.kr/" },
-      { "@type": "ListItem", "position": 2, "name": {{TITLE_JSON}}, "item": {{URL_JSON}} }
-    ]
-  }
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://xn--c79a54j61g9zg5zbf5l.kr/"},{"@type":"ListItem","position":2,"name":"수면클리닉 정보","item":"https://xn--c79a54j61g9zg5zbf5l.kr/#faq"},{"@type":"ListItem","position":3,"name":{{TITLE_JSON}},"item":{{URL_JSON}}}]}
   </script>
-
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="../css/tailwind-build.css" />
   <link rel="stylesheet" href="../css/style.css" />
 </head>
-
-<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen">
-
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-      <a href="../index.html" class="flex items-center gap-2 sm:gap-3 min-w-0" title="부천코엔이비인후과 홈으로 이동">
-        <img src="../assets/logo.png" alt="부천코엔이비인후과 - 부천 수면다원검사 수면무호흡증 양압기 전문 로고" class="h-6 sm:h-10 w-auto object-contain flex-shrink-0" width="40" height="40" />
-        <div class="min-w-0">
-          <div class="font-extrabold text-slate-900 text-sm sm:text-lg tracking-tight leading-none whitespace-nowrap overflow-hidden text-ellipsis">부천코엔이비인후과</div>
-          <span class="block text-[10px] sm:text-xs text-blue-600 font-semibold whitespace-nowrap overflow-hidden text-ellipsis">부천 수면다원검사 · 수면무호흡 · 양압기</span>
-        </div>
+<body class="bg-slate-50 text-slate-800 antialiased">
+  <header class="article-site-header">
+    <div class="article-header-inner">
+      <a href="../index.html" class="article-brand" title="부천코엔이비인후과 홈으로 이동">
+        <img src="../assets/logo.png" alt="부천코엔이비인후과 로고" width="48" height="48" />
+        <span><strong>부천코엔이비인후과</strong><small>수면클리닉 · 수면다원검사 · 양압기 치료</small></span>
       </a>
-      <a href="tel:032-677-5075" aria-label="부천코엔이비인후과 전화 문의 032-677-5075" class="inline-flex items-center gap-1 sm:gap-1.5 whitespace-nowrap px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg text-[11px] sm:text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition">
-        <span>진료 문의</span>
-      </a>
+      <a href="tel:032-677-5075" class="article-header-call"><span aria-hidden="true">☎</span> 진료 문의 <b>032-677-5075</b></a>
     </div>
   </header>
-
-  <main class="flex-1">
-    <article class="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
-      <a href="../index.html#faq" class="text-xs font-semibold text-blue-600 hover:underline">&larr; 부천코엔이비인후과 블로그 목록으로</a>
-
-      <header class="mt-4 mb-6">
-        <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug mb-3">{{TITLE}}</h1>
-        <div class="flex items-center gap-2 pb-4 border-b border-slate-200 text-xs text-slate-500">
-          <span class="font-semibold text-slate-700">{{AUTHOR}}</span>
-          <span>•</span>
-          <time datetime="{{DATE}}">{{DATE}}</time>
-        </div>
+  <div class="article-breadcrumb-wrap"><nav class="article-breadcrumb" aria-label="Breadcrumb"><a href="../index.html">홈</a><span>›</span><a href="../index.html#faq">수면클리닉 정보</a><span>›</span><span aria-current="page">{{TITLE}}</span></nav></div>
+  <main class="article-layout">
+    <article class="article-main">
+      <header class="article-heading">
+        <div class="article-kicker">부천코엔이비인후과 수면 건강 정보</div>
+        <h1>{{TITLE}}</h1>
+        <div class="article-byline"><span class="article-author-avatar">최</span><span><strong>{{AUTHOR}}</strong><small>이비인후과 전문의 · 부천코엔이비인후과</small></span><time datetime="{{DATE}}">{{DATE}}</time></div>
       </header>
-
       {{COVER_IMAGE_BLOCK}}
-
-      <div class="prose prose-slate max-w-none text-slate-700 text-sm sm:text-base leading-relaxed medical-article-content">
-        {{CONTENT}}
-      </div>
-
-      <div class="mt-8 p-4 sm:p-5 bg-blue-50 rounded-xl border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-        <div>
-          <div class="font-bold text-slate-900 text-sm">부천코엔이비인후과 수면클리닉</div>
-          <div class="text-xs text-slate-600 mt-0.5">수면다원검사 및 양압기 보험 처방 예약 상담</div>
-        </div>
-        <div class="flex flex-wrap items-center justify-center gap-2">
-          <a href="https://m.booking.naver.com/booking/13/bizes/1404075?theme=place&service-target=map-pc&lang=ko&area=pll" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#03C75A] text-white rounded-lg text-xs font-bold shadow-sm transition">
-            <span class="w-3.5 h-3.5 bg-white text-[#03C75A] rounded font-black text-[10px] flex items-center justify-center">N</span>
-            <span>수면검사외래진료 예약</span>
-          </a>
-          <a href="tel:032-677-5075" class="inline-flex items-center gap-1 px-3.5 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm transition">
-            <span>📞</span><span>032-677-5075</span>
-          </a>
-        </div>
-      </div>
-
+      {{SUMMARY_BLOCK}}
+      {{TOC_BLOCK}}
+      <div class="medical-article-content article-body">{{CONTENT}}</div>
+      <section class="article-disclaimer" aria-label="의료정보 안내"><strong>의료정보 안내</strong><p>이 콘텐츠는 일반적인 건강정보 제공을 위한 것으로, 개인의 증상에 대한 진단이나 치료를 대신하지 않습니다. 증상과 검사 결과에 따라 진료 및 치료 방법은 달라질 수 있으므로 정확한 판단은 의료진과 상담해 주세요.</p></section>
+      <section class="article-clinic-cta"><div><span class="article-cta-eyebrow">BUCHEON COEN ENT CLINIC</span><h2>부천코엔이비인후과 수면클리닉</h2><p>수면다원검사 · 수면무호흡증 상담 · 양압기 처방 및 관리</p></div><div class="article-cta-actions"><a class="article-booking" href="https://m.booking.naver.com/booking/13/bizes/1404075?theme=place&amp;service-target=map-pc&amp;lang=ko&amp;area=pll" target="_blank" rel="noopener noreferrer">네이버 예약</a><a class="article-phone" href="tel:032-677-5075">전화 상담 032-677-5075</a></div></section>
       {{RELATED_POSTS_BLOCK}}
     </article>
+    <aside class="article-sidebar" aria-label="관련 정보"><div class="article-sidebar-card"><div class="article-sidebar-label">SLEEP CLINIC</div><h2>수면 건강 정보</h2><p>코골이와 수면무호흡증, 검사와 치료에 관한 정보를 확인해 보세요.</p><a href="../index.html#faq">전체 글 보기 <span>→</span></a></div>{{POPULAR_POSTS_BLOCK}}<div class="article-sidebar-contact"><strong>진료 및 검사 문의</strong><a href="tel:032-677-5075">032-677-5075</a><small>부천코엔이비인후과</small></div></aside>
   </main>
-
-  <footer class="bg-white border-t border-slate-200 text-slate-500 text-xs py-8">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-3">
-      <div class="flex items-center gap-2">
-        <img src="../assets/logo.png" alt="부천코엔이비인후과 푸터 로고" class="h-6 w-auto object-contain opacity-80" width="24" height="24" loading="lazy" />
-        <span class="font-bold text-slate-800 text-sm">부천코엔이비인후과의원</span>
-      </div>
-      <p class="leading-relaxed">
-        전화번호: <strong>032-677-5075</strong> | 위치: 경기도 부천시 소사로754, 3층<br />
-        진료과목: <strong>부천 수면다원검사, 수면무호흡증, 코골이 치료, 양압기(CPAP) 건강보험 처방</strong>
-      </p>
-      <p class="text-slate-400">
-        <a href="../privacy.html" class="hover:text-slate-600 underline">개인정보처리방침</a>
-      </p>
-      <div class="pt-3 border-t border-slate-100 flex justify-between items-center text-slate-400">
-        <span>© 2026 부천코엔이비인후과의원. All rights reserved.</span>
-      </div>
-    </div>
-  </footer>
-
+  <footer class="article-footer"><div class="article-footer-inner"><div class="article-footer-brand"><img src="../assets/logo.png" alt="부천코엔이비인후과 로고" width="34" height="34" /><strong>부천코엔이비인후과의원</strong></div><p>경기도 부천시 소사로 754, 3층 · 대표전화 032-677-5075</p><p>진료 안내: 수면다원검사 · 수면무호흡증 · 코골이 · 양압기(CPAP) 치료</p><a href="../privacy.html">개인정보처리방침</a><small>© 2026 부천코엔이비인후과의원. All rights reserved.</small></div></footer>
 </body>
 </html>

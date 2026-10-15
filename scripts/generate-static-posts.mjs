@@ -90,11 +90,30 @@ async function fetchPostsFromDefaultFile() {
 async function getAllPosts() {
   try {
     const posts = await fetchPostsFromSupabase();
+    if (!Array.isArray(posts)) {
+      throw new Error("Supabase 응답이 글 배열 형식이 아닙니다.");
+    }
+
+    // 운영 빌드에서 빈 응답을 정상으로 취급하면 기존 글 목록과 사이트맵이
+    // 빈 상태로 덮어써질 수 있으므로, 운영 중에는 안전하게 빌드를 중단한다.
+    if (posts.length === 0 && process.env.GITHUB_ACTIONS === "true") {
+      throw new Error("운영 빌드에서 Supabase 글이 0건 반환되었습니다. 사이트맵 덮어쓰기를 방지하기 위해 중단합니다.");
+    }
+
     console.log(`Supabase에서 글 ${posts.length}건을 불러왔습니다.`);
     return posts;
   } catch (err) {
-    console.warn(`⚠️ Supabase 연동 실패, 기본 글로 폴백합니다: ${err.message}`);
+    // GitHub Actions 운영 빌드는 기본 글로 조용히 대체하지 않는다.
+    // 그래야 DB 연결 문제로 사이트맵/정적 HTML이 축소되는 것을 막을 수 있다.
+    if (process.env.GITHUB_ACTIONS === "true") {
+      throw new Error(`운영 빌드의 Supabase 조회에 실패했습니다. 기존 배포 파일을 보호하기 위해 빌드를 중단합니다. 원인: ${err.message}`);
+    }
+
+    console.warn(`⚠️ Supabase 연동 실패, 개발/로컬 환경에서 기본 글로 폴백합니다: ${err.message}`);
     const posts = await fetchPostsFromDefaultFile();
+    if (!posts.length) {
+      throw new Error("Supabase 조회에 실패했고 기본 글도 없습니다. 사이트맵을 생성하지 않습니다.");
+    }
     console.log(`기본 글 ${posts.length}건을 사용합니다.`);
     return posts;
   }
@@ -195,6 +214,43 @@ function getRelatedPosts(post, allPosts, count = 3) {
   return scored.slice(0, count).map(s => s.post);
 }
 
+function stripTags(value) {
+  return String(value || "").replace(/<script[\s\S]*?<\/script>/gi, " ").replace(/<style[\s\S]*?<\/style>/gi, " ").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/\s+/g, " ").trim();
+}
+
+function buildTocAndContent(content) {
+  // 본문 안에 잘못 포함된 메타 태그는 렌더링 콘텐츠에서 제거한다.
+  let html = String(content || "").replace(/<meta\b[^>]*>/gi, "");
+  const items = [];
+  let index = 0;
+  html = html.replace(/<(h2|h3)(\s[^>]*)?>([\s\S]*?)<\/\1>/gi, (full, tag, attrs = "", inner) => {
+    const text = stripTags(inner);
+    if (!text) return full;
+    index += 1;
+    const id = `article-section-${index}`;
+    const cleanedAttrs = attrs.replace(/\s+id=("[^"]*"|'[^']*'|[^\s>]+)/i, "");
+    items.push({ id, text, level: tag.toLowerCase() });
+    return `<${tag}${cleanedAttrs} id="${id}">${inner}</${tag}>`;
+  });
+  if (!items.length) return { content: html, toc: "" };
+  const list = items.map((item, i) => `<li class="${item.level === "h3" ? "article-toc-sub" : ""}"><a href="#${item.id}">${escapeHtml(item.text)}</a></li>`).join("\n");
+  const toc = `<nav class="article-toc" aria-label="글 목차"><h2>이 글의 목차 <span>(${items.length})</span></h2><ol>${list}</ol></nav>`;
+  return { content: html, toc };
+}
+
+function renderSummaryBlock(summary) {
+  const text = String(summary || "").trim();
+  if (!text) return "";
+  return `<section class="article-summary" aria-label="핵심 요약"><div class="article-summary-label">핵심 요약</div><p>${escapeHtml(text)}</p></section>`;
+}
+
+function renderPopularPostsBlock(post, allPosts) {
+  const popular = getRelatedPosts(post, allPosts, 5);
+  if (!popular.length) return "";
+  const items = popular.map(p => `<li><a href="${encodeURIComponent(getPostSlug(p))}.html">${escapeHtml(p.title)}</a></li>`).join("\n");
+  return `<section class="article-popular"><h2>함께 많이 읽는 글</h2><ol>${items}</ol></section>`;
+}
+
 function renderRelatedPostsBlock(post, allPosts) {
   const related = getRelatedPosts(post, allPosts, 3);
   if (related.length === 0) return "";
@@ -208,11 +264,9 @@ function renderRelatedPostsBlock(post, allPosts) {
     })
     .join("\n          ");
 
-  return `<nav aria-label="관련 글" class="mt-10 pt-6 border-t border-slate-200">
-        <h2 class="text-sm font-bold text-slate-900 mb-3">함께 보면 좋은 글</h2>
-        <ul class="grid gap-2 sm:grid-cols-3">
-          ${items}
-        </ul>
+  return `<nav aria-label="관련 글" class="article-related">
+        <h2>함께 보면 좋은 글</h2>
+        <ul class="article-related-list">${related.map(p => `<li><a href="${encodeURIComponent(getPostSlug(p))}.html"><strong>${escapeHtml(p.title)}</strong><time datetime="${escapeHtml(p.date || "")}">${escapeHtml(p.date || "")}</time></a></li>`).join("\n")}</ul>
       </nav>`;
 }
 
@@ -227,13 +281,19 @@ async function renderPostPage(template, post, allPosts) {
     : `${SITE_ORIGIN}/assets/hero-doctor.jpg`;
   const author = post.author || "부천코엔이비인후과 원장 최성웅";
   const date = post.date || "";
-  const content = ensureHtmlParagraphs(post.content);
+  const rawContent = ensureHtmlParagraphs(post.content);
+  const navigation = buildTocAndContent(rawContent);
+  const content = navigation.content;
+  const updatedDate = String(post.updatedAt || post.date || "").slice(0, 10) || date;
 
   const coverImageBlock = post.coverImage
-    ? `<div class="mb-6 rounded-2xl overflow-hidden shadow-sm bg-slate-50 border border-slate-100 flex items-center justify-center p-1"><img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" class="w-full h-auto max-h-[550px] object-contain rounded-xl" loading="lazy" /></div>`
+    ? `<figure class="article-cover"><img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" loading="eager" fetchpriority="high" /></figure>`
     : "";
 
   const relatedPostsBlock = renderRelatedPostsBlock(post, allPosts);
+  const popularPostsBlock = renderPopularPostsBlock(post, allPosts);
+  const summaryBlock = renderSummaryBlock(description);
+  const tocBlock = navigation.toc;
 
   return template
     .replaceAll("{{TITLE}}", escapeHtml(title))
@@ -244,11 +304,15 @@ async function renderPostPage(template, post, allPosts) {
     .replaceAll("{{DATE}}", escapeHtml(date))
     .replaceAll("{{CONTENT}}", content)
     .replaceAll("{{COVER_IMAGE_BLOCK}}", coverImageBlock)
+    .replaceAll("{{SUMMARY_BLOCK}}", summaryBlock)
+    .replaceAll("{{TOC_BLOCK}}", tocBlock)
+    .replaceAll("{{POPULAR_POSTS_BLOCK}}", popularPostsBlock)
     .replaceAll("{{RELATED_POSTS_BLOCK}}", relatedPostsBlock)
     .replaceAll("{{TITLE_JSON}}", JSON.stringify(title))
     .replaceAll("{{DESCRIPTION_JSON}}", JSON.stringify(description))
     .replaceAll("{{IMAGE_JSON}}", JSON.stringify(image))
     .replaceAll("{{DATE_JSON}}", JSON.stringify(date))
+    .replaceAll("{{UPDATED_DATE_JSON}}", JSON.stringify(updatedDate))
     .replaceAll("{{AUTHOR_JSON}}", JSON.stringify(author))
     .replaceAll("{{URL_JSON}}", JSON.stringify(url));
 }
@@ -304,27 +368,63 @@ async function injectListIntoIndex(posts) {
 /* ==================== 6. sitemap.xml 재생성 ==================== */
 
 async function regenerateSitemap(posts) {
+  if (!Array.isArray(posts) || posts.length === 0) {
+    throw new Error("글이 없는 상태에서는 사이트맵을 갱신하지 않습니다.");
+  }
+
   const today = new Date().toISOString().split("T")[0];
+  const normalizeDate = value => {
+    const candidate = String(value || "").slice(0, 10);
+    return /^\\d{4}-\\d{2}-\\d{2}$/.test(candidate) ? candidate : today;
+  };
+
+  // 색인 대상인 대표 URL만 포함한다. 구 URL 리다이렉트 스텁은 포함하지 않는다.
   const urls = [
     { loc: `${SITE_ORIGIN}/`, lastmod: today, changefreq: "weekly", priority: "1.0" },
-    // 애드센스 등 정책상 필요한 고정 페이지 (글 목록과 무관하게 항상 포함)
+    { loc: `${SITE_ORIGIN}/about.html`, lastmod: today, changefreq: "monthly", priority: "0.5" },
     { loc: `${SITE_ORIGIN}/privacy.html`, lastmod: today, changefreq: "yearly", priority: "0.3" },
     ...posts.map(post => ({
       loc: `${SITE_ORIGIN}/posts/${encodeURIComponent(getPostSlug(post))}.html`,
-      lastmod: (post.updatedAt || post.date || today).slice(0, 10),
+      lastmod: normalizeDate(post.updatedAt || post.date),
       changefreq: "monthly",
       priority: "0.8",
     })),
   ];
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\\n${urls
     .map(
-      u => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${u.lastmod}</lastmod>\n    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`
+      u => `  <url>\\n    <loc>${u.loc}</loc>\\n    <lastmod>${u.lastmod}</lastmod>\\n    <changefreq>${u.changefreq}</changefreq>\\n    <priority>${u.priority}</priority>\\n  </url>`
     )
-    .join("\n")}\n</urlset>\n`;
+    .join("\\n")}\\n</urlset>\\n`;
 
+  // XML을 먼저 파싱 가능한 형태로 작성하고, 빈 글 목록/잘못된 날짜는 위에서 차단한다.
   await fs.writeFile(path.join(ROOT, "sitemap.xml"), xml, "utf-8");
   console.log(`sitemap.xml을 URL ${urls.length}개로 재생성했습니다.`);
+}
+
+async function validateGeneratedPostPages(posts) {
+  for (const post of posts) {
+    const slug = getPostSlug(post);
+    const filePath = path.join(ROOT, "posts", `${slug}.html`);
+    const html = await fs.readFile(filePath, "utf-8");
+    const expectedCanonical = `${SITE_ORIGIN}/posts/${encodeURIComponent(slug)}.html`;
+
+    const checks = [
+      [/<title>[^<]+<\/title>/i.test(html), "title"],
+      [/<h1\b[^>]*>\s*[^<]+/i.test(html), "H1"],
+      [html.includes(`rel="canonical" href="${expectedCanonical}"`), "canonical"],
+      [/<meta name="robots" content="index, follow/i.test(html), "robots"],
+      [html.includes('"@type":"BlogPosting"'), "BlogPosting JSON-LD"],
+      [html.includes('"@type":"BreadcrumbList"'), "BreadcrumbList JSON-LD"],
+      [html.includes('class="medical-article-content article-body"'), "초기 HTML 본문"],
+    ];
+
+    const failed = checks.filter(([ok]) => !ok).map(([, name]) => name);
+    if (failed.length) {
+      throw new Error(`생성된 글 ${slug}.html의 SEO 검증 실패: ${failed.join(", ")}`);
+    }
+  }
+  console.log(`개별 글 HTML SEO 검증 완료: ${posts.length}건`);
 }
 
 /* ==================== 4-1. 글 통합(병합) 리다이렉트 ====================
@@ -544,6 +644,7 @@ async function main() {
     console.log(`  -> posts/${slug}.html 생성`);
   }
 
+  await validateGeneratedPostPages(posts);
   await writeLegacyRedirectStubs(posts);
   await writeMergeRedirectStubs(posts);
   await injectListIntoIndex(posts);
