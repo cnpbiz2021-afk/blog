@@ -31,3 +31,17 @@
 html{scroll-behavior:smooth}.reveal-on-scroll{opacity:0;transform:translateY(30px);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.7,.2,1);will-change:opacity,transform}.reveal-on-scroll.is-visible{opacity:1;transform:none}.reveal-on-scroll.reveal-delay-1{transition-delay:.08s}.reveal-on-scroll.reveal-delay-2{transition-delay:.16s}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal-on-scroll{opacity:1!important;transform:none!important;transition:none!important}}
 @media(max-width:600px){.about-hero{min-height:500px;background-image:linear-gradient(180deg,rgba(248,247,243,.94) 0%,rgba(248,247,243,.83) 60%,rgba(248,247,243,.66) 100%),url('../assets/about-hero.jpg');background-position:58% center}.about-hero p{max-width:92%}.reveal-on-scroll{transform:translateY(20px)}}
+
+/* Hero 3-line title + mobile hamburger menu */
+.editorial-hero-copy h1{word-break:keep-all}.editorial-hero-copy h1 .hero-line{display:block}.editorial-hero-copy h1 em.hero-line{font-size:.74em;line-height:1.45;margin-top:.35em}
+.mobile-menu-btn{display:none;width:44px;height:44px;border:0;background:transparent;padding:10px;margin-right:-10px;flex-direction:column;justify-content:center;gap:5px;cursor:pointer}
+.mobile-menu-btn span{display:block;width:22px;height:2px;background:#203747;border-radius:2px}
+.mobile-menu{position:fixed;inset:0;z-index:60;background:rgba(23,35,51,.45);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.mobile-menu.is-open{opacity:1;visibility:visible}
+.mobile-menu-panel{position:absolute;top:0;right:0;width:min(82%,320px);height:100%;background:#fff;padding:72px 28px 32px;box-shadow:-8px 0 30px rgba(0,0,0,.12);transform:translateX(100%);transition:transform .28s ease}
+.mobile-menu.is-open .mobile-menu-panel{transform:none}
+.mobile-menu-close{position:absolute;top:14px;right:14px;width:44px;height:44px;border:0;background:transparent;font-size:34px;line-height:1;color:#203747;cursor:pointer}
+.mobile-menu-nav{display:flex;flex-direction:column}
+.mobile-menu-nav a{padding:18px 4px;font-size:17px;font-weight:650;color:#172333;text-decoration:none;border-bottom:1px solid #ece9e3}
+@media(max-width:900px){.mobile-menu-btn{display:flex}}
+@media(max-width:600px){.editorial-hero-copy h1{font-size:clamp(28px,9vw,37px)}.editorial-hero-copy h1 em.hero-line{font-size:min(.72em,6.4vw)}}
