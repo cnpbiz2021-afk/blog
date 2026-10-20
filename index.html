@@ -24,7 +24,7 @@
   <meta property="og:site_name" content="부천코엔이비인후과 수면클리닉" />
   <meta property="og:title" content="부천 수면다원검사·수면무호흡증·코골이 양압기 치료 | 부천코엔이비인후과" />
   <meta property="og:description" content="부천 코골이·수면무호흡증 진단부터 수면다원검사, 양압기 건강보험 처방" />
-  <meta property="og:image" content="https://xn--c79a54j61g9zg5zbf5l.kr/assets/hero-doctor.jpg" />
+  <meta property="og:image" content="https://xn--c79a54j61g9zg5zbf5l.kr/assets/hero.jpg" />
   <meta property="og:url" content="https://xn--c79a54j61g9zg5zbf5l.kr/" />
   <meta property="og:locale" content="ko_KR" />
 
@@ -32,7 +32,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="부천 수면다원검사·수면무호흡증·코골이 양압기 치료 | 부천코엔이비인후과" />
   <meta name="twitter:description" content="부천 수면다원검사, 코골이, 수면무호흡증, 양압기 건강보험 적용 안내" />
-  <meta name="twitter:image" content="https://xn--c79a54j61g9zg5zbf5l.kr/assets/hero-doctor.jpg" />
+  <meta name="twitter:image" content="https://xn--c79a54j61g9zg5zbf5l.kr/assets/hero.jpg" />
 
   <!-- [SEO 최적화] 구조화 데이터 (JSON-LD) - 구글 및 네이버 리치 검색 결과 노출 -->
   <script type="application/ld+json">
@@ -42,7 +42,7 @@
     "name": "부천코엔이비인후과의원",
     "url": "https://xn--c79a54j61g9zg5zbf5l.kr/",
     "logo": "https://xn--c79a54j61g9zg5zbf5l.kr/assets/logo.png",
-    "image": "https://xn--c79a54j61g9zg5zbf5l.kr/assets/hero-doctor.jpg",
+    "image": "https://xn--c79a54j61g9zg5zbf5l.kr/assets/hero.jpg",
     "telephone": "032-677-5075",
     "description": "부천 수면다원검사, 수면무호흡증, 코골이 치료, 양압기 처방 전문 이비인후과",
     "address": {
@@ -78,259 +78,60 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
-<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen">
+<body class="bg-white text-slate-800 antialiased flex flex-col min-h-screen blog-home">
 
-  <!-- ==================== 1. 상단 헤더 ==================== -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-      
-      <!-- 병원 로고 및 타이틀 -->
-      <a href="/" class="flex items-center gap-2 sm:gap-3 min-w-0" title="부천코엔이비인후과 홈으로 이동">
-        <img src="assets/logo.png" alt="부천코엔이비인후과 - 부천 수면다원검사 수면무호흡증 양압기 전문 로고" class="h-6 sm:h-10 w-auto object-contain flex-shrink-0" width="40" height="40" />
-        <div class="min-w-0">
-          <div class="font-extrabold text-slate-900 text-sm sm:text-lg tracking-tight leading-none whitespace-nowrap overflow-hidden text-ellipsis">
-            부천코엔이비인후과
-          </div>
-          <span class="block text-[10px] sm:text-xs text-blue-600 font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
-            부천 수면다원검사 · 수면무호흡 · 양압기
-          </span>
-        </div>
+  <header class="blog-header">
+    <div class="blog-header-inner">
+      <a href="/" class="blog-brand" aria-label="수면건강연구소 홈">
+        <img src="assets/logo.png" alt="부천코엔이비인후과 로고" width="40" height="40" />
+        <span><strong>수면건강연구소</strong><small>by 부천코엔이비인후과 · 이비인후과 전문의 최성웅</small></span>
       </a>
-
-      <!-- 우측 액션 버튼 (글쓰기 / 로그인 / 전화상담) -->
-      <div class="flex items-center gap-1.5 sm:gap-3">
-        <!-- 글쓰기 버튼 (로그인 시 노출) -->
-        <button id="header-write-btn" onclick="openPostEditor()" class="hidden whitespace-nowrap px-2.5 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition">
-          ✏️ 글쓰기
-        </button>
-
-        <!-- 관리자 로그인/로그아웃 버튼: 평소에는 완전히 숨김. 로그인 상태일 때만 JS가 노출시킴 (관리자 전용 단축키: Alt+Shift+A) -->
-        <button id="header-auth-btn" onclick="toggleAdminAuthModal()" class="hidden whitespace-nowrap px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition border border-slate-200">
-          로그인
-        </button>
-
-        <!-- 전화문의 버튼 -->
-        <a href="tel:032-677-5075" aria-label="부천코엔이비인후과 전화 문의 032-677-5075" class="inline-flex items-center gap-1 sm:gap-1.5 whitespace-nowrap px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg text-[11px] sm:text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition">
-          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-950 fill-current flex-shrink-0" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57.55 0 1 .45 1 1V20a1 1 0 01-1 1c-9.39 0-17-7.61-17-17a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-          <span>진료 문의</span>
-        </a>
+      <nav class="blog-nav" aria-label="주요 메뉴">
+        <a href="#guides">핵심 가이드</a><a href="#latest">최신 글</a><a href="#test-info">검사정보</a><a href="about.html">의료진·병원소개</a>
+      </nav>
+      <div class="blog-header-actions">
+        <button id="header-write-btn" onclick="openPostEditor()" class="hidden">글쓰기</button>
+        <button id="header-auth-btn" onclick="toggleAdminAuthModal()" class="hidden">로그인</button>
       </div>
-
     </div>
   </header>
-
-  <!-- 관리자 로그인 상태 알림 바 (로그인 시에만 노출) -->
-  <aside id="admin-bar" class="hidden bg-slate-900 text-white px-4 py-2 text-xs">
-    <div class="max-w-4xl mx-auto flex items-center justify-between">
-      <span class="text-emerald-400 font-bold">● 관리자 접속 중 (글 작성/수정/삭제 가능)</span>
-      <div class="flex items-center gap-2">
-        <button onclick="exportPostsJSON()" class="text-slate-300 hover:text-white underline">백업(다운로드)</button>
-        <span>|</span>
-        <label class="text-slate-300 hover:text-white underline cursor-pointer">
-          복원(업로드)
-          <input type="file" id="backup-file-input" accept=".json" class="hidden" />
-        </label>
-        <span>|</span>
-        <button onclick="logoutAdmin()" class="text-rose-300 hover:text-rose-100 font-bold">로그아웃</button>
-      </div>
-    </div>
-  </aside>
+  <aside id="admin-bar" class="hidden bg-slate-900 text-white px-4 py-2 text-xs"><div class="max-w-6xl mx-auto flex items-center justify-between"><span class="text-emerald-400 font-bold">● 관리자 접속 중</span><div class="flex items-center gap-2"><button onclick="exportPostsJSON()" class="underline">백업</button><label class="underline cursor-pointer">복원<input type="file" id="backup-file-input" accept=".json" class="hidden" /></label><button onclick="logoutAdmin()" class="text-rose-300 font-bold">로그아웃</button></div></div></aside>
 
   <main class="flex-1">
-
-    <!-- ==================== 2. 히어로 섹션 ==================== -->
-    <section class="bg-white border-b border-slate-200">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        
-        <!-- 히어로 메인 배너 이미지 -->
-        <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200 bg-slate-900">
-          <!-- [SEO/성능 최적화] WebP 우선 제공(용량 약 83% 절감) + 미지원 브라우저는 최적화 JPEG(품질80)로 폴백 -->
-          <picture>
-            <source srcset="assets/hero-doctor.webp" type="image/webp" />
-            <img 
-              src="assets/hero-doctor.jpg" 
-              alt="부천코엔이비인후과 - 부천 수면다원검사, 수면무호흡증, 코골이 치료 및 양압기 처방 수면클리닉" 
-              class="w-full h-auto object-cover max-h-[480px]"
-              width="1024" height="682"
-              loading="eager"
-              fetchpriority="high"
-            />
-          </picture>
+    <section class="editorial-hero editorial-hero-photo">
+      <div class="editorial-shell editorial-hero-grid">
+        <div class="editorial-hero-copy">
+          <span class="editorial-eyebrow">SLEEP MEDICINE JOURNAL</span>
+          <h1>수면다원검사와 수면무호흡증,<br><em>전문의가 쉽게 설명해드립니다.</em></h1>
+          <p>코골이·수면무호흡증·수면다원검사·양압기 치료를 진료 현장의 관점에서 정확하고 이해하기 쉽게 정리하는 수면 건강 전문 웹블로그입니다.</p>
+          <div class="editorial-hero-links"><a href="#latest">최신 글 읽기 <span>→</span></a><a href="#guides">처음이라면 핵심 가이드부터</a></div>
         </div>
-
-        <!-- 핵심 키워드 헤드라인 (H1 시맨틱 구조 적용) -->
-        <div class="mt-6 text-center sm:text-left flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200">
-          <div>
-            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
-              <span class="px-2.5 py-0.5 rounded-md bg-blue-100 text-blue-700 text-xs font-bold">부천 수면클리닉</span>
-              <span class="text-xs text-slate-500 font-medium">건강보험 80% 적용 수면다원검사 & 맞춤 양압기</span>
-            </div>
-            <!-- [SEO 최적화] 검색엔진 최우선 H1 태그로 핵심 키워드 배치 -->
-            <h1 class="text-lg sm:text-xl font-extrabold text-slate-900">
-              부천 수면다원검사 · 수면무호흡증 · 코골이 · 양압기 치료
-            </h1>
-          </div>
-          <div class="flex-shrink-0 text-center sm:text-right">
-            <a href="https://m.booking.naver.com/booking/13/bizes/1404075?theme=place&service-target=map-pc&lang=ko&area=pll" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#03C75A] hover:bg-[#02b350] text-white text-xs sm:text-sm font-extrabold rounded-xl shadow-md transition hover:-translate-y-0.5" title="네이버 예약으로 이동">
-              <span class="w-4 h-4 bg-white text-[#03C75A] rounded font-black text-[11px] flex items-center justify-center">N</span>
-              <span>수면검사외래진료 예약</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- [SEO 최적화] 검색엔진이 읽을 수 있는 실제 본문 소개 텍스트 -->
-        <div class="mt-4 p-4 sm:p-5 bg-white rounded-2xl border border-slate-200">
-          <p class="text-sm text-slate-600 leading-relaxed">
-            부천코엔이비인후과 수면클리닉은 반복되는 <strong>코골이</strong>, 잠자는 동안 숨이 멎는 느낌, 자고 일어나도 개운하지 않은 낮 시간의 심한 피로감이 있는 분들을 위해 <strong>부천 수면다원검사</strong>를 진행하고 있습니다. 수면다원검사는 수면 중 뇌파, 호흡 기류, 혈중 산소포화도, 심전도, 코골이 강도 등을 밤새 종합적으로 기록하여 <strong>수면무호흡증</strong>의 유무와 중증도(경도·중등도·중증)를 객관적인 수치로 진단하는 정밀 검사입니다.
-          </p>
-          <p class="text-sm text-slate-600 leading-relaxed mt-3">
-            건강보험 급여 기준에 해당하는 경우 보험 적용을 받아 부담을 줄일 수 있으며, 검사 결과와 원인에 따라 <strong>양압기(CPAP) 처방</strong>, 구강내 장치, 자세 교정, 생활습관 개선 등 단계별 맞춤 치료를 안내해드립니다. 부천 및 인근 지역에서 코골이·수면무호흡증으로 수면다원검사를 고려하고 계시다면 부천코엔이비인후과로 편하게 문의해 주세요.
-          </p>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ==================== 2-1. 수면다원검사 진행 절차 ==================== -->
-    <section class="py-8 sm:py-12 bg-white border-b border-slate-200">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6">
-        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-6">
-          부천 수면다원검사 진행 절차
-        </h2>
-        <ol class="space-y-5">
-          <li>
-            <div class="flex items-center gap-3">
-              <span class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm">1</span>
-              <h3 class="font-bold text-slate-900 text-sm sm:text-base">초진 상담 및 문진</h3>
-            </div>
-            <p class="text-sm text-slate-600 leading-relaxed mt-1 ml-11">코골이, 무호흡, 주간 졸림 등 증상과 생활습관, 기저질환 여부를 확인하고 이비인후과적 진찰(비강·구강·인후두 구조 확인)을 진행합니다. 이 과정에서 수면다원검사가 필요한지, 건강보험 급여 대상에 해당하는지를 함께 안내해드립니다.</p>
-          </li>
-          <li>
-            <div class="flex items-center gap-3">
-              <span class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm">2</span>
-              <h3 class="font-bold text-slate-900 text-sm sm:text-base">수면다원검사 예약 및 사전 준비</h3>
-            </div>
-            <p class="text-sm text-slate-600 leading-relaxed mt-1 ml-11">검사 가능일을 예약하고, 검사 전 카페인·음주 제한, 평소 수면 패턴 유지 등 정확한 결과를 위한 준비 사항을 안내합니다.</p>
-          </li>
-          <li>
-            <div class="flex items-center gap-3">
-              <span class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm">3</span>
-              <h3 class="font-bold text-slate-900 text-sm sm:text-base">야간 수면다원검사 시행</h3>
-            </div>
-            <p class="text-sm text-slate-600 leading-relaxed mt-1 ml-11">뇌파, 안전도, 근전도, 심전도, 호흡 기류, 혈중 산소포화도, 코골이 소리 등 여러 생체 신호를 밤새 동시에 기록합니다. 이를 통해 수면 단계, 무호흡·저호흡 발생 횟수(AHI 지수), 산소포화도 저하 정도를 객관적으로 측정합니다.</p>
-          </li>
-          <li>
-            <div class="flex items-center gap-3">
-              <span class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm">4</span>
-              <h3 class="font-bold text-slate-900 text-sm sm:text-base">판독 및 결과 상담</h3>
-            </div>
-            <p class="text-sm text-slate-600 leading-relaxed mt-1 ml-11">기록된 데이터를 판독하여 수면무호흡증의 유무와 경도·중등도·중증 여부를 확인하고, 담당의가 결과를 토대로 원인과 치료 방향을 상세히 설명해드립니다.</p>
-          </li>
-          <li>
-            <div class="flex items-center gap-3">
-              <span class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm">5</span>
-              <h3 class="font-bold text-slate-900 text-sm sm:text-base">맞춤 치료 계획 수립</h3>
-            </div>
-            <p class="text-sm text-slate-600 leading-relaxed mt-1 ml-11">검사 결과에 따라 양압기(CPAP) 처방, 구강내 장치, 수면 자세 교정, 체중 관리 등 생활습관 개선, 필요 시 이비인후과적 수술 등 단계별 치료 계획을 함께 상의합니다. 양압기 처방 후에도 압력 적응과 마스크 착용감 등을 주기적으로 점검하며 관리해드립니다.</p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- ==================== 2-2. 자주 묻는 질문 (FAQ) ==================== -->
-    <section id="faq" class="py-8 sm:py-12">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6">
-        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-6">
-          부천 수면다원검사·양압기 자주 묻는 질문
-        </h2>
-        <div class="space-y-4">
-          <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5">
-            <h3 class="font-bold text-slate-900 text-sm sm:text-base">Q. 코골이만 있어도 수면다원검사를 받을 수 있나요?</h3>
-            <p class="text-sm text-slate-600 leading-relaxed mt-2">네, 가능합니다. 코골이는 상기도가 좁아지면서 나타나는 대표적인 증상으로, 수면무호흡증의 신호일 수 있습니다. 코골이와 함께 주간 졸림, 아침 두통, 자다가 숨이 막히는 느낌 등이 동반된다면 검사를 통해 원인과 중증도를 확인해보시는 것을 권합니다.</p>
-          </div>
-          <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5">
-            <h3 class="font-bold text-slate-900 text-sm sm:text-base">Q. 검사는 얼마나 걸리고, 결과는 언제 알 수 있나요?</h3>
-            <p class="text-sm text-slate-600 leading-relaxed mt-2">수면다원검사는 하룻밤(야간) 동안 시행되며, 검사 후 데이터 판독에 일정 시일이 소요됩니다. 정확한 검사 소요 시간과 결과 상담 일정은 초진 상담 시 개인별로 안내해드립니다.</p>
-          </div>
-          <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5">
-            <h3 class="font-bold text-slate-900 text-sm sm:text-base">Q. 건강보험이 적용되나요?</h3>
-            <p class="text-sm text-slate-600 leading-relaxed mt-2">수면다원검사와 양압기 치료는 일정한 급여 기준(임상 증상, 검사 결과 등)을 충족하는 경우 건강보험이 적용됩니다. 급여 대상 여부는 환자분의 증상과 검사 결과에 따라 달라지므로, 상담을 통해 개별적으로 확인해드리고 있습니다.</p>
-          </div>
-          <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5">
-            <h3 class="font-bold text-slate-900 text-sm sm:text-base">Q. 양압기는 평생 사용해야 하나요?</h3>
-            <p class="text-sm text-slate-600 leading-relaxed mt-2">양압기는 수면 중 기도를 열어주어 무호흡을 막아주는 치료 기기로, 사용 기간은 무호흡증의 원인과 중증도, 체중 변화, 생활습관 개선 정도에 따라 달라질 수 있습니다. 정기적인 진료를 통해 사용 상태를 점검하며 치료 계획을 조정합니다.</p>
-          </div>
+        <div class="editorial-feature-card">
+          <div class="editorial-feature-label">EDITOR'S GUIDE</div>
+          <h2>수면다원검사,<br>무엇을 어떻게 검사할까요?</h2>
+          <p>뇌파부터 호흡, 산소포화도, 심전도, 코골이와 수면 자세까지. 밤사이의 수면을 객관적으로 기록하는 검사입니다.</p>
+          <a href="#test-info">검사정보 살펴보기 →</a>
         </div>
       </div>
     </section>
 
-    <!-- [SEO 최적화] FAQPage 구조화 데이터 - 구글 FAQ 리치 스니펫 노출용 -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "코골이만 있어도 수면다원검사를 받을 수 있나요?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "네, 가능합니다. 코골이는 상기도가 좁아지면서 나타나는 대표적인 증상으로 수면무호흡증의 신호일 수 있어, 주간 졸림이나 아침 두통 등이 동반되면 검사를 통해 원인과 중증도를 확인하는 것이 권장됩니다."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "검사는 얼마나 걸리고, 결과는 언제 알 수 있나요?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "수면다원검사는 하룻밤 동안 시행되며, 검사 후 데이터 판독에 일정 시일이 소요됩니다. 정확한 일정은 초진 상담 시 개인별로 안내됩니다."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "건강보험이 적용되나요?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "수면다원검사와 양압기 치료는 임상 증상 및 검사 결과 등 일정한 급여 기준을 충족하는 경우 건강보험이 적용되며, 대상 여부는 개별 상담을 통해 확인합니다."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "양압기는 평생 사용해야 하나요?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "사용 기간은 무호흡증의 원인과 중증도, 체중 변화, 생활습관 개선 정도에 따라 달라지며, 정기적인 진료를 통해 사용 상태를 점검하고 치료 계획을 조정합니다."
-          }
-        }
-      ]
-    }
-    </script>
-
-    <!-- ==================== 3. 블로그 포스팅 목록 ==================== -->
-    <section class="py-8 sm:py-12">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6">
-        
-        <!-- 섹션 헤더 (H2 사용으로 구조적 위계 설정) -->
-        <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-200">
-          <div class="flex items-center gap-2">
-            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">
-              부천 수면다원검사 & 코골이·양압기 정보글
-            </h2>
-            <span id="posts-count-badge" class="text-xs font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">17</span>
-          </div>
-
-          <!-- 새 글 쓰기 버튼 -->
-          <button id="inline-write-btn" onclick="openPostEditor()" class="hidden px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg shadow-sm">
-            + 새 글 쓰기
-          </button>
+    <section id="guides" class="editorial-section">
+      <div class="editorial-shell">
+        <div class="editorial-section-head"><div><span class="editorial-eyebrow">START HERE</span><h2>무엇이 궁금하신가요?</h2></div><p>증상부터 검사, 치료까지 필요한 정보를 주제별로 찾아보세요.</p></div>
+        <div class="topic-grid">
+          <a class="topic-card" href="#latest"><span>01</span><h3>수면다원검사</h3><p>검사 대상, 준비사항, 진행 과정, 결과와 건강보험 기준</p><b>관련 글 보기 →</b></a>
+          <a class="topic-card" href="#latest"><span>02</span><h3>수면무호흡증</h3><p>증상과 중증도, 합병증, 생활습관과 치료 선택</p><b>관련 글 보기 →</b></a>
+          <a class="topic-card" href="#latest"><span>03</span><h3>코골이</h3><p>단순 코골이와 수면무호흡증의 차이, 확인해야 할 신호</p><b>관련 글 보기 →</b></a>
+          <a class="topic-card" href="#latest"><span>04</span><h3>양압기 CPAP</h3><p>적응, 마스크, 누출, 코막힘과 건강보험 처방 정보</p><b>관련 글 보기 →</b></a>
         </div>
+      </div>
+    </section>
 
-        <!-- 포스팅 목록 컨테이너 -->
-        <!-- [SEO 참고] 이 컨테이너는 현재 클라이언트 JS(app.js)가 Supabase에서 글을 불러와 렌더링합니다.
-             검색엔진 크롤러가 최신 글 목록/본문을 안정적으로 색인하도록 하려면,
-             빌드/배포 시점에 이 안쪽에 서버사이드(혹은 사전 렌더링)로 생성한 정적 <article> 마크업을
-             주입하는 방식으로 전환하는 것을 권장합니다. (아래 SSR 전환 가이드 참고) -->
-        <div id="posts-list-container" class="space-y-6" data-ssr-slot="blog-posts">
+    <section id="latest" class="editorial-section editorial-latest">
+      <div class="editorial-shell">
+        <div class="editorial-section-head latest-head"><div><span class="editorial-eyebrow">LATEST ARTICLES</span><h2>최신 수면 건강 정보</h2></div><div class="latest-meta"><span id="posts-count-badge">1</span> articles</div></div>
+        <button id="inline-write-btn" onclick="openPostEditor()" class="hidden">+ 새 글 쓰기</button>
+        <div id="posts-list-container" class="editorial-post-list" data-ssr-slot="blog-posts">
           <!-- SSR:POSTS:START -->
           <article class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all group hover:border-blue-300"><div class="flex flex-col sm:flex-row gap-5"><div class="w-full sm:w-48 h-40 sm:h-32 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0"><img src="https://huxefngduhlyvpxpmfsq.supabase.co/storage/v1/object/public/blog-images/c15584e5-fb9d-441d-862b-245b6ee1bbac/1791964152184-a1de9e7d-01c8-462f-9ab7-c2e3ea0c5252.png" alt="수면다원검사 건강보험 적용 기준은? 비용과 검사 조건 정리" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy"></div><div class="flex-1 flex flex-col justify-between"><div><div class="flex items-center gap-2 text-xs text-slate-400 mb-1.5"><span class="font-medium text-slate-600">부천코엔이비인후과 원장 최성웅</span><span>•</span><time datetime="2026-10-14">2026-10-14</time></div><h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-snug mb-2"><a href="posts/%EC%88%98%EB%A9%B4%EB%8B%A4%EC%9B%90%EA%B2%80%EC%82%AC-%EA%B1%B4%EA%B0%95%EB%B3%B4%ED%97%98-%EC%A0%81%EC%9A%A9-%EA%B8%B0%EC%A4%80%EC%9D%80-%EB%B9%84%EC%9A%A9%EA%B3%BC-%EA%B2%80%EC%82%AC-%EC%A1%B0%EA%B1%B4-%EC%A0%95%EB%A6%AC-cebe332e.html" class="hover:underline">수면다원검사 건강보험 적용 기준은? 비용과 검사 조건 정리</a></h3><p class="text-slate-600 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3 leading-relaxed">수면다원검사는 코골이·수면무호흡증이 의심되고 일정한 급여 기준을 충족하면 건강보험 적용을 받아 검사할 수 있습니다.</p></div></div></div></article>
           <article class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all group hover:border-blue-300"><div class="flex flex-col sm:flex-row gap-5"><div class="w-full sm:w-48 h-40 sm:h-32 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0"><img src="https://huxefngduhlyvpxpmfsq.supabase.co/storage/v1/object/public/blog-images/c15584e5-fb9d-441d-862b-245b6ee1bbac/1791165608032-a9755970-eca4-44b2-872a-6b9d0d5d503f.png" alt="양압기 사용 중 코가 막히는 이유, 비염 때문일까? 해결 방법 알아보기" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy"></div><div class="flex-1 flex flex-col justify-between"><div><div class="flex items-center gap-2 text-xs text-slate-400 mb-1.5"><span class="font-medium text-slate-600">부천코엔이비인후과 원장 최성웅</span><span>•</span><time datetime="2026-10-05">2026-10-05</time></div><h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-snug mb-2"><a href="posts/%EC%96%91%EC%95%95%EA%B8%B0-%EC%82%AC%EC%9A%A9-%EC%A4%91-%EC%BD%94%EA%B0%80-%EB%A7%89%ED%9E%88%EB%8A%94-%EC%9D%B4%EC%9C%A0-%EB%B9%84%EC%97%BC-%EB%95%8C%EB%AC%B8%EC%9D%BC%EA%B9%8C-%ED%95%B4%EA%B2%B0-%EB%B0%A9%EB%B2%95-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0-9dc08c6d.html" class="hover:underline">양압기 사용 중 코가 막히는 이유, 비염 때문일까? 해결 방법 알아보기</a></h3><p class="text-slate-600 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3 leading-relaxed">양압기 사용 중 코막힘은 비염·코 점막의 건조·가습 부족·코 구조 등의 원인으로 발생할 수 있어, 가습 상태와 비강 상태를 확인하고 지속될 경우 이비인후과 진료를 받는 것이 좋습니다.</p></div></div></div></article>
@@ -351,48 +152,23 @@
           <article class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all group hover:border-blue-300"><div class="flex flex-col sm:flex-row gap-5"><div class="w-full sm:w-48 h-40 sm:h-32 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0"><img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="체중·생활습관과 코골이·수면무호흡증의 관계" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy"></div><div class="flex-1 flex flex-col justify-between"><div><div class="flex items-center gap-2 text-xs text-slate-400 mb-1.5"><span class="font-medium text-slate-600">부천코엔이비인후과 원장 최성웅</span><span>•</span><time datetime="2026-09-16">2026-09-16</time></div><h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-snug mb-2"><a href="posts/%EC%B2%B4%EC%A4%91%EC%83%9D%ED%99%9C%EC%8A%B5%EA%B4%80%EA%B3%BC-%EC%BD%94%EA%B3%A8%EC%9D%B4%EC%88%98%EB%A9%B4%EB%AC%B4%ED%98%B8%ED%9D%A1%EC%A6%9D%EC%9D%98-%EA%B4%80%EA%B3%84-b01d5f14.html" class="hover:underline">체중·생활습관과 코골이·수면무호흡증의 관계</a></h3><p class="text-slate-600 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3 leading-relaxed">체중 증가가 코골이와 수면무호흡증에 미치는 영향, 체중 감량의 효과, 음주가 코골이를 심하게 만드는 이유까지 생활습관 관리 포인트를 정리했습니다.</p></div></div></div></article>
           <!-- SSR:POSTS:END -->
         </div>
-
-        <noscript>
-          <div class="p-6 bg-white rounded-2xl border border-slate-200 text-sm text-slate-600">
-            자바스크립트가 비활성화된 환경입니다. 부천 수면다원검사·코골이·수면무호흡증·양압기 관련 최신 안내글은
-            전화(032-677-5075) 또는 병원 방문 시 확인하실 수 있습니다.
-          </div>
-        </noscript>
-
-        <!-- 포스팅이 없을 때 빈 화면 안내 -->
-        <div id="no-posts-view" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200 p-8">
-          <p class="text-slate-500 text-sm mb-4">등록된 수면클리닉 블로그 포스팅이 없습니다.</p>
-          <button onclick="if(isAdminLoggedIn()){openPostEditor();}else{openAdminLoginModal();}" class="px-5 py-2.5 bg-blue-600 text-white font-bold rounded-xl text-sm shadow hover:bg-blue-700 transition">
-            첫 글 작성하기
-          </button>
-        </div>
-
+        <div id="no-posts-view" class="hidden text-center py-16"><p>등록된 글이 없습니다.</p></div>
       </div>
     </section>
 
+    <section id="test-info" class="editorial-section test-info-section">
+      <div class="editorial-shell test-info-grid">
+        <div><span class="editorial-eyebrow">POLYSOMNOGRAPHY</span><h2>수면다원검사는<br>밤사이의 수면을 기록합니다.</h2><p>수면 중 나타나는 여러 생체신호를 동시에 측정해 수면의 구조와 호흡 이상을 평가합니다. 검사 자체보다 중요한 것은 결과를 증상과 기도 상태, 치료 계획과 함께 해석하는 것입니다.</p><a href="#latest" class="text-link">수면다원검사 관련 글 모아보기 →</a></div>
+        <div class="signal-grid"><div><b>EEG</b><span>뇌파 · 수면단계</span></div><div><b>AIRFLOW</b><span>코·입 호흡기류</span></div><div><b>SpO₂</b><span>혈중 산소포화도</span></div><div><b>ECG</b><span>심전도</span></div><div><b>EFFORT</b><span>흉부·복부 호흡운동</span></div><div><b>POSITION</b><span>코골이 · 수면자세</span></div></div>
+      </div>
+    </section>
+
+    <section class="editorial-section author-section">
+      <div class="editorial-shell author-card"><div class="author-photo"><img src="assets/doctor-choi.png" alt="이비인후과 전문의 최성웅 원장" loading="lazy"></div><div><span class="editorial-eyebrow">MEDICAL EDITOR</span><h2>최성웅 원장 <small>이비인후과 전문의</small></h2><p>부천코엔이비인후과에서 진료하며, 코골이·수면무호흡증·수면다원검사·양압기 치료와 관련된 의료정보를 직접 작성하고 검토합니다.</p><a href="about.html">사이트와 의료진 소개 →</a></div></div>
+    </section>
   </main>
 
-  <!-- ==================== 4. 푸터 ==================== -->
-  <footer class="bg-white border-t border-slate-200 text-slate-500 text-xs py-8">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-3">
-      <div id="footer-brand-trigger" class="flex items-center gap-2 select-none">
-        <img src="assets/logo.png" alt="부천코엔이비인후과 푸터 로고" class="h-6 w-auto object-contain opacity-80" width="24" height="24" loading="lazy" />
-        <span class="font-bold text-slate-800 text-sm">부천코엔이비인후과의원</span>
-      </div>
-      <p class="leading-relaxed">
-        전화번호: <strong>032-677-5075</strong> | 위치: 경기도 부천시 소사로754, 3층<br />
-        진료과목: <strong>부천 수면다원검사, 수면무호흡증, 코골이 치료, 양압기(CPAP) 건강보험 처방</strong>
-      </p>
-      <p class="text-slate-400 flex flex-wrap items-center gap-x-4 gap-y-2">
-        <a href="about.html" class="hover:text-slate-600 underline font-semibold">사이트 소개</a>
-        <a href="privacy.html" class="hover:text-slate-600 underline">개인정보처리방침</a>
-      </p>
-      <div class="pt-3 border-t border-slate-100 flex justify-between items-center text-slate-400">
-        <span>© 2026 부천코엔이비인후과의원. All rights reserved.</span>
-      </div>
-    </div>
-  </footer>
-
+  <footer class="blog-footer"><div class="editorial-shell"><div class="blog-footer-top"><div><strong>수면건강연구소</strong><p>이비인후과 전문의가 전하는 수면 건강 정보</p></div><div class="blog-footer-links"><a href="about.html">사이트 소개</a><a href="privacy.html">개인정보처리방침</a><a href="https://수면다원검사.site" target="_blank" rel="noopener">병원 홈페이지 ↗</a></div></div><div id="footer-brand-trigger" class="blog-footer-bottom">부천코엔이비인후과의원 · 경기도 부천시 소사로 754, 3층 · 032-677-5075 <span>© 2026</span></div></div></footer>
   <!-- 모달 생략 (동일한 로직 적용) -->
   <div id="post-detail-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto" onclick="closePostDetail()">
     <div id="post-detail-card" class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative flex flex-col" onclick="event.stopPropagation()">
@@ -479,5 +255,5 @@
   <script src="js/admin.js"></script>
   <script src="js/app.js"></script>
 
-</body>
+<script src="js/scroll-reveal.js" defer></script></body>
 </html>
