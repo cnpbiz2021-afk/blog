@@ -232,7 +232,7 @@ async function renderBlogPosts() {
       const image = post.coverImage ? `<img src="${escapeHtml(post.coverImage)}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.style.display='none'">` : "";
       const imageBox = post.coverImage ? `<div class="w-full sm:w-48 h-40 sm:h-32 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">${image}</div>` : "";
       const adminControls = isAdmin ? `<div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs"><span class="text-slate-400">관리자 관리</span><div class="flex gap-2"><button onclick="event.stopPropagation(); openPostEditor('${escapeHtml(post.id)}')" class="px-2.5 py-1 bg-amber-50 text-amber-700 hover:bg-amber-100 rounded-md font-semibold transition">✏️ 수정</button><button onclick="event.stopPropagation(); deletePost('${escapeHtml(post.id)}')" class="px-2.5 py-1 bg-rose-50 text-rose-700 hover:bg-rose-100 rounded-md font-semibold transition">🗑️ 삭제</button></div></div>` : "";
-      return `<article class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer group hover:border-blue-300" onclick="openPostDetail('${escapeHtml(post.id)}')"><div class="flex flex-col sm:flex-row gap-5">${imageBox}<div class="flex-1 flex flex-col justify-between"><div><div class="flex items-center gap-2 text-xs text-slate-400 mb-1.5"><span class="font-medium text-slate-600">${author}</span><span>•</span><time datetime="${date}">${date}</time></div><h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-snug mb-2"><a href="${postUrl}" class="hover:underline" onclick="return handlePostLinkClick(event, '${escapeHtml(post.id)}')">${title}</a></h3><p class="text-slate-600 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3 leading-relaxed">${cleanSummary}</p></div>${adminControls}</div></div></article>`;
+      return `<article class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer group hover:border-blue-300" onclick="goToPostPage('${escapeHtml(post.id)}')"><div class="flex flex-col sm:flex-row gap-5">${imageBox}<div class="flex-1 flex flex-col justify-between"><div><div class="flex items-center gap-2 text-xs text-slate-400 mb-1.5"><span class="font-medium text-slate-600">${author}</span><span>•</span><time datetime="${date}">${date}</time></div><h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-snug mb-2"><a href="${postUrl}" class="hover:underline" onclick="return handlePostLinkClick(event, '${escapeHtml(post.id)}')">${title}</a></h3><p class="text-slate-600 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3 leading-relaxed">${cleanSummary}</p></div>${adminControls}</div></div></article>`;
     }).join("");
   } catch (error) {
     console.error(error);
@@ -250,9 +250,28 @@ function handlePostLinkClick(event, postId) {
   const isPlainClick = event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
   if (isPlainClick) {
     event.preventDefault();
-    openPostDetail(postId);
+    goToPostPage(postId);
   }
   return true;
+}
+
+// 글을 팝업(모달)이 아닌 단독 페이지(/posts/{slug}.html)로 연다.
+// 단, 관리자가 방금 등록해 아직 정적 페이지가 빌드되지 않은 글(최대 1시간)은
+// 404가 나지 않도록 기존 모달로 대신 보여준다.
+async function goToPostPage(identifier, options = {}) {
+  const { replace = false } = options;
+  const posts = await getStoredPosts();
+  const post = findPostByIdentifier(posts, identifier);
+  if (!post) return;
+  const url = getPostUrl(post);
+  try {
+    const res = await fetch(url, { method: "HEAD", cache: "no-store" });
+    if (res.ok) {
+      if (replace) location.replace(url); else location.href = url;
+      return;
+    }
+  } catch (e) { /* 네트워크 오류 시 모달로 대체 */ }
+  openPostDetail(identifier, { pushHistory: !replace });
 }
 
 /* ==================== 상세 열기/닫기 ==================== */
@@ -279,7 +298,8 @@ async function openPostDetail(identifier, options = {}) {
 
   applyPostMeta(post);
 
-  const url = getPostUrl(post);
+  // 모달은 정적 페이지가 아직 없는 글의 대체 표시용이므로, 새로고침해도 동작하는 ?post= 주소를 사용
+  const url = `${HOME_BASE_PATH}?post=${encodeURIComponent(getPostSlug(post))}`;
   const state = { postSlug: getPostSlug(post) };
   if (pushHistory) {
     history.pushState(state, "", url);
@@ -321,6 +341,7 @@ window.renderBlogPosts = renderBlogPosts;
 window.openPostDetail = openPostDetail;
 window.closePostDetail = closePostDetail;
 window.handlePostLinkClick = handlePostLinkClick;
+window.goToPostPage = goToPostPage;
 
 window.addEventListener("DOMContentLoaded", async () => {
   if (window.adminReady) await window.adminReady;
@@ -329,7 +350,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   // 직접 URL(예: ?post=슬러그)로 접속했거나 새로고침한 경우, 해당 상세글을 바로 연다.
   const postParam = new URLSearchParams(location.search).get("post");
   if (postParam) {
-    await openPostDetail(postParam, { pushHistory: false });
+    await goToPostPage(postParam, { replace: true });
   }
 
   window.addEventListener("keydown", e => {
